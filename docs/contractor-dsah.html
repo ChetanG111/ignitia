@@ -1,0 +1,363 @@
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authority Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <style>
+        @keyframes bounceEntrance {
+            0% {
+                opacity: 0;
+                transform: translateY(16px) scale(0.98);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        .animate-entrance {
+            animation: bounceEntrance 0.7s cubic-bezier(0.2, 0.9, 0.3, 1.1) forwards;
+        }
+        .delay-100 {
+            animation-delay: 100ms;
+        }
+        .delay-200 {
+            animation-delay: 200ms;
+        }
+        
+        /* Minimalist Scrollbar */
+        ::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background-color: #d4d4d4;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background-color: #a3a3a3;
+        }
+
+        /* Hide select default arrow */
+        select {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+    </style>
+</head>
+<body class="bg-neutral-100 text-neutral-900 font-sans antialiased flex flex-col lg:flex-row h-screen lg:overflow-hidden">
+
+    <!-- Left Sidebar: Navigation -->
+    <aside class="w-full lg:w-64 flex-shrink-0 bg-white border-b lg:border-b-0 lg:border-r border-neutral-200 z-30 flex flex-col">
+        <!-- Logo -->
+        <div class="h-16 px-6 flex items-center border-b border-neutral-200 flex-shrink-0">
+            <span class="font-medium text-lg tracking-tighter">AUTH.</span>
+        </div>
+        
+        <!-- Navigation Menu -->
+        <nav class="flex-1 overflow-y-auto p-4 flex flex-col gap-1.5">
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-neutral-100 text-black font-medium text-sm transition-colors">
+                <iconify-icon icon="solar:pie-chart-2-linear" style="stroke-width: 1.5" class="text-lg"></iconify-icon>
+                Overview
+            </a>
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-neutral-500 hover:text-black hover:bg-neutral-50 font-medium text-sm transition-colors">
+                <iconify-icon icon="solar:clipboard-list-linear" style="stroke-width: 1.5" class="text-lg"></iconify-icon>
+                Issues Management
+            </a>
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-neutral-500 hover:text-black hover:bg-neutral-50 font-medium text-sm transition-colors">
+                <iconify-icon icon="solar:users-group-rounded-linear" style="stroke-width: 1.5" class="text-lg"></iconify-icon>
+                Contractors
+            </a>
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-neutral-500 hover:text-black hover:bg-neutral-50 font-medium text-sm transition-colors">
+                <iconify-icon icon="solar:clock-circle-linear" style="stroke-width: 1.5" class="text-lg"></iconify-icon>
+                SLA Monitoring
+            </a>
+        </nav>
+        
+        <!-- User Profile (Bottom) -->
+        <div class="p-4 border-t border-neutral-200">
+            <div class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-neutral-50 cursor-pointer transition-colors">
+                <div class="w-8 h-8 rounded-full bg-neutral-200 border border-neutral-300 flex items-center justify-center text-xs font-medium text-neutral-600">JD</div>
+                <div class="flex flex-col flex-1 min-w-0">
+                    <span class="text-sm font-medium text-neutral-900 truncate">John Doe</span>
+                    <span class="text-xs text-neutral-500 truncate">Dispatcher</span>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Center Panel: Analytics (Overview) -->
+    <main class="flex-1 overflow-y-auto flex flex-col bg-neutral-100">
+        <!-- Center Header -->
+        <header class="h-16 px-6 lg:px-8 flex items-center justify-between border-b border-neutral-200 bg-white sticky top-0 z-10 flex-shrink-0">
+            <h1 class="text-xl font-medium tracking-tight text-neutral-900">System Overview</h1>
+            <div class="flex items-center gap-3">
+                <button class="flex items-center gap-2 text-sm font-medium text-neutral-600 bg-neutral-50 border border-neutral-200 px-3 py-1.5 rounded-lg hover:bg-neutral-100 hover:text-black transition-colors">
+                    <iconify-icon icon="solar:calendar-linear" style="stroke-width: 1.5"></iconify-icon>
+                    Last 30 Days
+                </button>
+            </div>
+        </header>
+
+        <div class="p-6 lg:p-8 flex flex-col gap-6 animate-entrance opacity-0">
+            <!-- KPI Cards Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <!-- KPI 1 -->
+                <div class="bg-white border border-neutral-200 rounded-xl shadow-md p-5 flex flex-col justify-between h-28">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-medium text-neutral-500">Total Issues</span>
+                        <iconify-icon icon="solar:folder-error-linear" style="stroke-width: 1.5" class="text-neutral-400 text-lg"></iconify-icon>
+                    </div>
+                    <div class="flex items-end justify-between">
+                        <span class="text-2xl font-medium tracking-tight text-neutral-900">1,248</span>
+                        <span class="text-xs font-medium text-neutral-500 flex items-center gap-1">
+                            <iconify-icon icon="solar:arrow-right-up-linear" class="text-neutral-900"></iconify-icon> 12%
+                        </span>
+                    </div>
+                </div>
+                <!-- KPI 2 -->
+                <div class="bg-white border border-neutral-200 rounded-xl shadow-md p-5 flex flex-col justify-between h-28">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-medium text-neutral-500">Open Tickets</span>
+                        <iconify-icon icon="solar:inbox-in-linear" style="stroke-width: 1.5" class="text-neutral-400 text-lg"></iconify-icon>
+                    </div>
+                    <div class="flex items-end justify-between">
+                        <span class="text-2xl font-medium tracking-tight text-neutral-900">24%</span>
+                        <span class="text-xs font-medium text-neutral-500">299 Active</span>
+                    </div>
+                </div>
+                <!-- KPI 3 -->
+                <div class="bg-white border border-neutral-200 rounded-xl shadow-md p-5 flex flex-col justify-between h-28">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-medium text-neutral-500">Overdue SLA</span>
+                        <iconify-icon icon="solar:danger-triangle-linear" style="stroke-width: 1.5" class="text-neutral-400 text-lg"></iconify-icon>
+                    </div>
+                    <div class="flex items-end justify-between">
+                        <span class="text-2xl font-medium tracking-tight text-neutral-900">8.2%</span>
+                        <span class="text-xs font-medium text-neutral-500 flex items-center gap-1">
+                            <iconify-icon icon="solar:arrow-right-down-linear" class="text-neutral-900"></iconify-icon> 1.4%
+                        </span>
+                    </div>
+                </div>
+                <!-- KPI 4 -->
+                <div class="bg-white border border-neutral-200 rounded-xl shadow-md p-5 flex flex-col justify-between h-28">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-medium text-neutral-500">Avg Resolution</span>
+                        <iconify-icon icon="solar:history-linear" style="stroke-width: 1.5" class="text-neutral-400 text-lg"></iconify-icon>
+                    </div>
+                    <div class="flex items-end justify-between">
+                        <span class="text-2xl font-medium tracking-tight text-neutral-900">4.2d</span>
+                        <span class="text-xs font-medium text-neutral-500">Target: 5d</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Bar Chart: Severity Distribution -->
+                <div class="bg-white border border-neutral-200 rounded-xl shadow-md p-6 lg:col-span-1 flex flex-col">
+                    <h2 class="text-sm font-medium text-neutral-900 mb-6">Severity Distribution</h2>
+                    <div class="flex-1 flex flex-col gap-4 justify-center">
+                        <!-- Critical -->
+                        <div class="flex items-center gap-3">
+                            <span class="text-xs font-medium text-neutral-600 w-16">Critical</span>
+                            <div class="flex-1 h-2 bg-neutral-100 rounded-full overflow-hidden">
+                                <div class="h-full bg-neutral-900 rounded-full" style="width: 15%;"></div>
+                            </div>
+                            <span class="text-xs font-medium text-neutral-900 w-8 text-right">15%</span>
+                        </div>
+                        <!-- High -->
+                        <div class="flex items-center gap-3">
+                            <span class="text-xs font-medium text-neutral-600 w-16">High</span>
+                            <div class="flex-1 h-2 bg-neutral-100 rounded-full overflow-hidden">
+                                <div class="h-full bg-neutral-600 rounded-full" style="width: 28%;"></div>
+                            </div>
+                            <span class="text-xs font-medium text-neutral-900 w-8 text-right">28%</span>
+                        </div>
+                        <!-- Medium -->
+                        <div class="flex items-center gap-3">
+                            <span class="text-xs font-medium text-neutral-600 w-16">Medium</span>
+                            <div class="flex-1 h-2 bg-neutral-100 rounded-full overflow-hidden">
+                                <div class="h-full bg-neutral-400 rounded-full" style="width: 42%;"></div>
+                            </div>
+                            <span class="text-xs font-medium text-neutral-900 w-8 text-right">42%</span>
+                        </div>
+                        <!-- Low -->
+                        <div class="flex items-center gap-3">
+                            <span class="text-xs font-medium text-neutral-600 w-16">Low</span>
+                            <div class="flex-1 h-2 bg-neutral-100 rounded-full overflow-hidden">
+                                <div class="h-full bg-neutral-300 rounded-full" style="width: 15%;"></div>
+                            </div>
+                            <span class="text-xs font-medium text-neutral-900 w-8 text-right">15%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Table: Zone-wise Issues -->
+                <div class="bg-white border border-neutral-200 rounded-xl shadow-md overflow-hidden lg:col-span-2 flex flex-col">
+                    <div class="px-6 py-5 border-b border-neutral-200 flex items-center justify-between bg-white">
+                        <h2 class="text-sm font-medium text-neutral-900">Zone Urgency Queue</h2>
+                        <button class="text-xs font-medium text-neutral-500 hover:text-black transition-colors flex items-center gap-1">
+                            View All <iconify-icon icon="solar:arrow-right-linear"></iconify-icon>
+                        </button>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="bg-neutral-50/50 border-b border-neutral-200">
+                                    <th class="px-6 py-3 text-xs font-medium text-neutral-500 uppercase tracking-wider">Zone</th>
+                                    <th class="px-6 py-3 text-xs font-medium text-neutral-500 uppercase tracking-wider">Critical</th>
+                                    <th class="px-6 py-3 text-xs font-medium text-neutral-500 uppercase tracking-wider">Open</th>
+                                    <th class="px-6 py-3 text-xs font-medium text-neutral-500 uppercase tracking-wider">Avg SLA</th>
+                                    <th class="px-6 py-3 text-xs font-medium text-neutral-500 uppercase tracking-wider">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-neutral-100 bg-white">
+                                <tr class="hover:bg-neutral-50/50 transition-colors cursor-pointer group">
+                                    <td class="px-6 py-4 text-sm font-medium text-neutral-900">Downtown Core</td>
+                                    <td class="px-6 py-4 text-sm text-neutral-600">42</td>
+                                    <td class="px-6 py-4 text-sm text-neutral-600">156</td>
+                                    <td class="px-6 py-4 text-sm text-neutral-600">1.8d</td>
+                                    <td class="px-6 py-4">
+                                        <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-red-50 text-red-700 border border-red-100">Severe</span>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-neutral-50/50 transition-colors cursor-pointer group">
+                                    <td class="px-6 py-4 text-sm font-medium text-neutral-900">West End</td>
+                                    <td class="px-6 py-4 text-sm text-neutral-600">18</td>
+                                    <td class="px-6 py-4 text-sm text-neutral-600">84</td>
+                                    <td class="px-6 py-4 text-sm text-neutral-600">3.2d</td>
+                                    <td class="px-6 py-4">
+                                        <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-amber-50 text-amber-700 border border-amber-100">Warning</span>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-neutral-50/50 transition-colors cursor-pointer group">
+                                    <td class="px-6 py-4 text-sm font-medium text-neutral-900">North Hills</td>
+                                    <td class="px-6 py-4 text-sm text-neutral-600">5</td>
+                                    <td class="px-6 py-4 text-sm text-neutral-600">42</td>
+                                    <td class="px-6 py-4 text-sm text-neutral-600">4.5d</td>
+                                    <td class="px-6 py-4">
+                                        <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-neutral-100 text-neutral-700 border border-neutral-200">Stable</span>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-neutral-50/50 transition-colors cursor-pointer group">
+                                    <td class="px-6 py-4 text-sm font-medium text-neutral-900">East Riverside</td>
+                                    <td class="px-6 py-4 text-sm text-neutral-600">2</td>
+                                    <td class="px-6 py-4 text-sm text-neutral-600">17</td>
+                                    <td class="px-6 py-4 text-sm text-neutral-600">2.1d</td>
+                                    <td class="px-6 py-4">
+                                        <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-neutral-100 text-neutral-700 border border-neutral-200">Stable</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Right Panel: Contextual Detail Drawer -->
+    <aside class="w-full lg:w-[340px] flex-shrink-0 bg-white border-t lg:border-t-0 lg:border-l border-neutral-200 shadow-[0_0_15px_rgba(0,0,0,0.03)] z-20 flex flex-col animate-entrance opacity-0 delay-100">
+        <!-- Drawer Header -->
+        <header class="h-16 px-5 flex items-center justify-between border-b border-neutral-200 flex-shrink-0">
+            <h3 class="text-sm font-medium text-neutral-900">Issue Details</h3>
+            <button class="text-neutral-400 hover:text-black transition-colors rounded-md p-1 hover:bg-neutral-100 lg:hidden">
+                <iconify-icon icon="solar:close-circle-linear" class="text-xl"></iconify-icon>
+            </button>
+        </header>
+
+        <!-- Drawer Content -->
+        <div class="flex-1 overflow-y-auto p-5 flex flex-col gap-6">
+            
+            <!-- Issue Info -->
+            <div class="flex flex-col gap-3">
+                <div class="flex items-start justify-between">
+                    <div>
+                        <span class="text-xs font-medium text-neutral-500 block mb-0.5">Reference ID</span>
+                        <span class="text-base font-medium tracking-tight text-neutral-900">#INC-8429</span>
+                    </div>
+                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-50 text-red-700 border border-red-100">Critical</span>
+                </div>
+                
+                <div class="pt-2 border-t border-neutral-100 flex flex-col gap-2">
+                    <div class="flex items-start gap-2">
+                        <iconify-icon icon="solar:map-point-linear" class="text-neutral-400 mt-0.5"></iconify-icon>
+                        <div>
+                            <span class="text-xs font-medium text-neutral-900 block">Downtown Core, Block B</span>
+                            <span class="text-xs text-neutral-500">Reported today, 09:14 AM</span>
+                        </div>
+                    </div>
+                    <p class="text-sm text-neutral-600 bg-neutral-50 border border-neutral-200 rounded-lg p-3 mt-1 leading-relaxed">
+                        Major structural fault reported on the main suspension bridge. Immediate assessment required to prevent complete failure.
+                    </p>
+                </div>
+            </div>
+
+            <hr class="border-neutral-200">
+
+            <!-- Actions Form -->
+            <form class="flex flex-col gap-5">
+                
+                <!-- Status Dropdown -->
+                <div class="flex flex-col gap-2">
+                    <label class="text-xs font-medium text-neutral-700">Current Status</label>
+                    <div class="relative">
+                        <select class="w-full bg-white border border-neutral-200 rounded-lg py-2.5 pl-3 pr-10 text-sm text-neutral-900 focus:outline-none focus:border-black focus:ring-1 focus:ring-black transition-shadow cursor-pointer">
+                            <option value="open">Open (Unassigned)</option>
+                            <option value="progress" selected="">In Progress</option>
+                            <option value="review">Under Review</option>
+                            <option value="resolved">Resolved</option>
+                        </select>
+                        <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                            <iconify-icon icon="solar:alt-arrow-down-linear" class="text-neutral-400"></iconify-icon>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Assign Contractor Dropdown -->
+                <div class="flex flex-col gap-2">
+                    <label class="text-xs font-medium text-neutral-700">Assign Contractor</label>
+                    <div class="relative">
+                        <select class="w-full bg-white border border-neutral-200 rounded-lg py-2.5 pl-3 pr-10 text-sm text-neutral-900 focus:outline-none focus:border-black focus:ring-1 focus:ring-black transition-shadow cursor-pointer">
+                            <option value="" disabled="">Select contractor...</option>
+                            <option value="c1" selected="">Apex Infrastructure Ltd.</option>
+                            <option value="c2">BuildCorp Inc.</option>
+                            <option value="c3">Metro Repair Group</option>
+                        </select>
+                        <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                            <iconify-icon icon="solar:alt-arrow-down-linear" class="text-neutral-400"></iconify-icon>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SLA Deadline Display -->
+                <div class="flex flex-col gap-2 mt-2">
+                    <label class="text-xs font-medium text-neutral-700">SLA Deadline</label>
+                    <div class="flex items-center gap-3 bg-red-50/50 border border-red-200 rounded-lg p-3">
+                        <iconify-icon icon="solar:alarm-linear" class="text-red-500 text-lg"></iconify-icon>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-medium text-red-700">Expires in 2h 15m</span>
+                            <span class="text-xs text-red-500">Breach triggers auto-escalation</span>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+
+        <!-- Drawer Footer (Sticky action) -->
+        <div class="p-5 border-t border-neutral-200 bg-neutral-50/50 flex-shrink-0 mt-auto">
+            <button type="button" class="w-full flex items-center justify-center gap-2 bg-black text-white px-4 py-2.5 rounded-lg text-sm font-medium hover:bg-neutral-800 transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black">
+                Update Issue
+                <iconify-icon icon="solar:check-circle-linear" class="text-base"></iconify-icon>
+            </button>
+        </div>
+    </aside>
+
+
+</body></html>

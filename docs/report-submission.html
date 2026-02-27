@@ -1,0 +1,172 @@
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report Submission</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <style>
+        @keyframes bounceEntrance {
+            0% {
+                opacity: 0;
+                transform: translateY(24px) scale(0.97);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        .animate-entrance {
+            animation: bounceEntrance 0.8s cubic-bezier(0.2, 0.9, 0.3, 1.1) forwards;
+        }
+        /* Custom scrollbar for textarea */
+        textarea::-webkit-scrollbar {
+            width: 6px;
+        }
+        textarea::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        textarea::-webkit-scrollbar-thumb {
+            background-color: #e5e5e5;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-neutral-100 text-neutral-900 font-sans antialiased min-h-screen flex items-center justify-center p-4 sm:p-6 md:p-12">
+
+    <!-- Main Container -->
+    <div class="w-full max-w-[960px] bg-white rounded-2xl shadow-md border border-neutral-200 flex flex-col md:flex-row overflow-hidden animate-entrance opacity-0">
+        
+        <!-- Left Panel: Media & Location -->
+        <div class="w-full md:w-5/12 p-6 md:p-8 flex flex-col gap-6 bg-white border-b md:border-b-0 md:border-r border-neutral-200">
+            
+            <!-- Image Dropzone -->
+            <div class="flex-1 flex flex-col">
+                <label class="text-sm font-medium text-neutral-700 mb-2 block">Evidence Media</label>
+                <div class="flex-1 min-h-[200px] border-2 border-dashed border-neutral-200 rounded-xl bg-neutral-50 hover:bg-neutral-100/50 hover:border-black transition-all cursor-pointer flex flex-col items-center justify-center text-center p-6 group">
+                    <div class="w-12 h-12 rounded-full bg-white border border-neutral-200 shadow-sm flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
+                        <iconify-icon icon="solar:camera-add-linear" style="stroke-width: 1.5" class="text-xl text-neutral-600"></iconify-icon>
+                    </div>
+                    <span class="text-sm font-medium text-neutral-800">Drag &amp; drop files here</span>
+                    <span class="text-xs text-neutral-500 mt-1">or click to browse from device</span>
+                    <span class="text-xs text-neutral-400 mt-4">Supports JPG, PNG, MP4 up to 50MB</span>
+                </div>
+            </div>
+
+            <!-- Map Preview -->
+            <div class="flex flex-col">
+                <div class="flex items-center justify-between mb-2">
+                    <label class="text-sm font-medium text-neutral-700 block">Incident Location</label>
+                </div>
+                <div class="h-44 w-full rounded-xl border border-neutral-200 bg-neutral-50 relative overflow-hidden group">
+                    <!-- Subtle Map Grid Pattern -->
+                    <div class="absolute inset-0 opacity-40" style="background-image: radial-gradient(circle at 2px 2px, #a3a3a3 1px, transparent 0); background-size: 20px 20px;"></div>
+                    
+                    <!-- Faux Map Features -->
+                    <svg class="absolute inset-0 w-full h-full opacity-10 stroke-neutral-500" fill="none" viewBox="0 0 100 100" preserveAspectRatio="none">
+                        <path d="M0,30 Q40,40 60,10 T100,50 M-10,80 Q30,90 70,60 T110,90" stroke-width="2"></path>
+                    </svg>
+
+                    <!-- Center Marker -->
+                    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center z-10">
+                        <div class="relative flex items-center justify-center">
+                            <div class="absolute w-8 h-8 bg-black/10 rounded-full animate-ping"></div>
+                            <iconify-icon icon="solar:map-point-linear" style="stroke-width: 1.5" class="text-3xl text-black relative z-10 drop-shadow"></iconify-icon>
+                        </div>
+                    </div>
+
+                    <!-- Edit Location Pill -->
+                    <button type="button" class="absolute bottom-3 right-3 bg-white/90 backdrop-blur-sm border border-neutral-200 rounded-lg px-2.5 py-1.5 flex items-center gap-1.5 shadow-sm hover:bg-neutral-50 transition-colors z-20">
+                        <iconify-icon icon="solar:pen-linear" class="text-neutral-500"></iconify-icon>
+                        <span class="text-xs font-medium text-neutral-700">Adjust pin</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Panel: Form Fields -->
+        <div class="w-full md:w-7/12 p-6 md:p-8 flex flex-col bg-white">
+            
+            <!-- Header -->
+            <div class="mb-8">
+                <h1 class="text-2xl font-medium tracking-tight text-neutral-900">Submit Report</h1>
+                <p class="text-sm text-neutral-500 mt-1.5">Provide detailed information to ensure rapid triage and resolution.</p>
+            </div>
+
+            <form class="flex flex-col flex-1 gap-6">
+                
+                <!-- Coordinates (Read-only) -->
+                <div>
+                    <label class="text-sm font-medium text-neutral-700 block mb-2">GPS Coordinates</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                            <iconify-icon icon="solar:routing-2-linear" class="text-neutral-400 text-lg"></iconify-icon>
+                        </div>
+                        <input type="text" readonly="" value="37.7749° N, 122.4194° W" class="w-full pl-10 pr-4 py-2.5 bg-neutral-50 border border-neutral-200 rounded-xl text-sm text-neutral-600 font-mono focus:outline-none cursor-default">
+                    </div>
+                </div>
+
+                <!-- Severity Selector -->
+                <div>
+                    <label class="text-sm font-medium text-neutral-700 block mb-2">Severity Level</label>
+                    <div class="grid grid-cols-3 gap-3">
+                        <!-- Low -->
+                        <div class="relative">
+                            <input type="radio" name="severity" id="sev-low" class="peer sr-only">
+                            <label for="sev-low" class="flex flex-col items-center justify-center p-3.5 border border-neutral-200 rounded-xl cursor-pointer transition-all hover:bg-neutral-50 peer-checked:border-black peer-checked:ring-1 peer-checked:ring-black peer-checked:bg-neutral-50/50">
+                                <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 mb-2 shadow-sm"></span>
+                                <span class="text-sm font-medium text-neutral-500 peer-checked:text-black transition-colors">Low</span>
+                            </label>
+                        </div>
+                        <!-- Medium -->
+                        <div class="relative">
+                            <input type="radio" name="severity" id="sev-medium" class="peer sr-only" checked="">
+                            <label for="sev-medium" class="flex flex-col items-center justify-center p-3.5 border border-neutral-200 rounded-xl cursor-pointer transition-all hover:bg-neutral-50 peer-checked:border-black peer-checked:ring-1 peer-checked:ring-black peer-checked:bg-neutral-50/50">
+                                <span class="w-2.5 h-2.5 rounded-full bg-amber-400 mb-2 shadow-sm"></span>
+                                <span class="text-sm font-medium text-neutral-500 peer-checked:text-black transition-colors">Medium</span>
+                            </label>
+                        </div>
+                        <!-- Critical -->
+                        <div class="relative">
+                            <input type="radio" name="severity" id="sev-critical" class="peer sr-only">
+                            <label for="sev-critical" class="flex flex-col items-center justify-center p-3.5 border border-neutral-200 rounded-xl cursor-pointer transition-all hover:bg-neutral-50 peer-checked:border-black peer-checked:ring-1 peer-checked:ring-black peer-checked:bg-neutral-50/50">
+                                <span class="w-2.5 h-2.5 rounded-full bg-red-500 mb-2 shadow-sm"></span>
+                                <span class="text-sm font-medium text-neutral-500 peer-checked:text-black transition-colors">Critical</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Description -->
+                <div class="flex-1 flex flex-col">
+                    <div class="flex items-center justify-between mb-2">
+                        <label class="text-sm font-medium text-neutral-700 block">Description</label>
+                        <span class="text-xs text-neutral-400">Optional</span>
+                    </div>
+                    <textarea placeholder="Describe the conditions, hazards, or specific context..." class="w-full flex-1 min-h-[120px] p-3.5 bg-white border border-neutral-200 rounded-xl text-sm text-neutral-900 placeholder-neutral-400 focus:outline-none focus:border-black focus:ring-1 focus:ring-black transition-shadow resize-none"></textarea>
+                </div>
+
+                <!-- Footer Area: SLA & Submit -->
+                <div class="mt-2 flex flex-col gap-5">
+                    
+                    <!-- SLA Notice -->
+                    <div class="flex gap-3 items-start bg-neutral-50 border border-neutral-200/60 rounded-xl p-3.5">
+                        <iconify-icon icon="solar:shield-warning-linear" class="text-neutral-500 text-lg shrink-0 mt-0.5"></iconify-icon>
+                        <p class="text-xs text-neutral-600 leading-relaxed">
+                            <span class="font-medium text-neutral-900">Priority Routing:</span> Reports marked as Critical automatically trigger immediate escalation with a 15-minute response SLA.
+                        </p>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="w-full flex items-center justify-center gap-2 bg-black text-white px-6 py-3.5 rounded-xl text-sm font-medium hover:bg-neutral-800 transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black">
+                        Submit Report
+                        <iconify-icon icon="solar:arrow-right-linear" class="text-lg"></iconify-icon>
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+
+</body></html>

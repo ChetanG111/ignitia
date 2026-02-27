@@ -1,0 +1,231 @@
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Subtle Fade-in Animation */
+        @keyframes fade-in-up {
+            0% {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .anim-fade-in {
+            opacity: 0;
+            animation: fade-in-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .delay-100 { animation-delay: 100ms; }
+        .delay-200 { animation-delay: 200ms; }
+        .delay-300 { animation-delay: 300ms; }
+    </style>
+</head>
+<body class="bg-neutral-100 text-neutral-900 min-h-screen flex flex-col selection:bg-black selection:text-white">
+
+    <!-- Header -->
+    <header class="px-4 sm:px-8 py-6 anim-fade-in max-w-6xl mx-auto w-full flex items-center justify-between">
+        <a href="#" class="inline-flex items-center gap-1.5 text-sm font-medium text-neutral-500 hover:text-black transition-colors">
+            <iconify-icon icon="solar:arrow-left-linear" stroke-width="1.5" class="text-lg"></iconify-icon>
+            Back to feed
+        </a>
+        <div class="text-xl font-medium tracking-tighter text-black">A X I S</div>
+    </header>
+
+    <!-- Main Layout: 3-Column Grid -->
+    <main class="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-6 px-4 sm:px-8 pb-12 max-w-6xl mx-auto w-full">
+        
+        <!-- Left Panel: Issue Info (Col Span 4) -->
+        <section class="lg:col-span-4 flex flex-col gap-6 anim-fade-in delay-100">
+            <div class="bg-white border border-neutral-200 rounded-2xl shadow-md overflow-hidden flex flex-col">
+                <!-- Large Image -->
+                <div class="relative h-64 w-full bg-neutral-100">
+                    <img src="https://images.unsplash.com/photo-1541888086425-d81bb19240f5?w=600&amp;h=600&amp;fit=crop" alt="Elevator Shaft" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 border-b border-neutral-200/50 pointer-events-none"></div>
+                </div>
+                
+                <!-- Info Content -->
+                <div class="p-6 flex flex-col">
+                    <!-- Badges -->
+                    <div class="flex flex-wrap items-center gap-2.5 mb-4">
+                        <span class="px-2.5 py-1 bg-red-50 text-red-700 text-xs font-semibold rounded-lg border border-red-100 tracking-wide uppercase">Critical</span>
+                        <span class="px-2.5 py-1 bg-red-50 text-red-700 text-xs font-semibold rounded-lg border border-red-100 flex items-center gap-1.5 shadow-sm">
+                            <iconify-icon icon="solar:alarm-linear" stroke-width="1.5"></iconify-icon>
+                            -4h overdue
+                        </span>
+                    </div>
+
+                    <!-- Title -->
+                    <h1 class="text-2xl font-medium text-black tracking-tight mb-5 leading-tight">Elevator shaft basement flooding</h1>
+
+                    <!-- Meta Details -->
+                    <div class="flex flex-col gap-3.5 text-sm font-medium text-neutral-500 border-t border-neutral-100 pt-5">
+                        <div class="flex items-start gap-2.5">
+                            <iconify-icon icon="solar:map-point-linear" stroke-width="1.5" class="text-lg text-neutral-400 mt-0.5"></iconify-icon> 
+                            <span class="text-black flex-1">Building A, Level B1<br><span class="text-xs text-neutral-400 font-normal">Coordinates: 40.7128° N, 74.0060° W</span></span>
+                        </div>
+                        <div class="flex items-center gap-2.5">
+                            <iconify-icon icon="solar:clock-circle-linear" stroke-width="1.5" class="text-lg text-neutral-400"></iconify-icon> 
+                            <span class="text-black">3 days open <span class="text-neutral-400 font-normal">(Reported Oct 24)</span></span>
+                        </div>
+                        <div class="flex items-center gap-2.5">
+                            <iconify-icon icon="solar:users-group-two-rounded-linear" stroke-width="1.5" class="text-lg text-neutral-400"></iconify-icon> 
+                            <span class="text-black">5 citizen confirmations</span>
+                        </div>
+                        <div class="flex items-center gap-2.5 mt-1">
+                            <iconify-icon icon="solar:hashtag-linear" stroke-width="1.5" class="text-lg text-neutral-400"></iconify-icon> 
+                            <span class="text-neutral-400">ID: 9408</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Center Panel: Timeline & Status (Col Span 4) -->
+        <section class="lg:col-span-4 flex flex-col gap-6 anim-fade-in delay-200">
+            <div class="bg-white border border-neutral-200 rounded-2xl shadow-md p-6 h-full">
+                <h2 class="text-lg font-medium text-black tracking-tight mb-8">Resolution Timeline</h2>
+                
+                <!-- Vertical Timeline -->
+                <div class="relative pl-3 space-y-8 before:absolute before:inset-y-1 before:left-[23px] before:w-px before:bg-neutral-200">
+                    
+                    <!-- Step 1: Reported -->
+                    <div class="relative flex gap-4 items-start group">
+                        <div class="w-8 h-8 rounded-full bg-black border-[3px] border-white shadow-sm flex-shrink-0 relative z-10 flex items-center justify-center">
+                            <iconify-icon icon="solar:check-read-linear" stroke-width="2" class="text-white text-xs"></iconify-icon>
+                        </div>
+                        <div class="flex-1 flex flex-col pt-1">
+                            <span class="text-sm font-semibold text-black">Reported</span>
+                            <span class="text-xs text-neutral-400 font-medium mt-0.5">Oct 24, 09:12 AM</span>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Verified -->
+                    <div class="relative flex gap-4 items-start group">
+                        <div class="w-8 h-8 rounded-full bg-black border-[3px] border-white shadow-sm flex-shrink-0 relative z-10 flex items-center justify-center">
+                            <iconify-icon icon="solar:check-read-linear" stroke-width="2" class="text-white text-xs"></iconify-icon>
+                        </div>
+                        <div class="flex-1 flex flex-col pt-1">
+                            <span class="text-sm font-semibold text-black">Verified</span>
+                            <span class="text-xs text-neutral-400 font-medium mt-0.5">Oct 24, 11:45 AM</span>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Assigned -->
+                    <div class="relative flex gap-4 items-start group">
+                        <div class="w-8 h-8 rounded-full bg-black border-[3px] border-white shadow-sm flex-shrink-0 relative z-10 flex items-center justify-center">
+                            <iconify-icon icon="solar:check-read-linear" stroke-width="2" class="text-white text-xs"></iconify-icon>
+                        </div>
+                        <div class="flex-1 flex flex-col pt-1">
+                            <span class="text-sm font-semibold text-black">Assigned</span>
+                            <span class="text-xs text-neutral-400 font-medium mt-0.5">Oct 25, 08:30 AM</span>
+                        </div>
+                    </div>
+
+                    <!-- Step 4: In Progress (Active) -->
+                    <div class="relative flex gap-4 items-start group">
+                        <div class="w-8 h-8 rounded-full bg-white border-[3px] border-black shadow-sm flex-shrink-0 relative z-10 flex items-center justify-center">
+                            <div class="w-2 h-2 bg-black rounded-full"></div>
+                        </div>
+                        <div class="flex-1 flex flex-col pt-1">
+                            <span class="text-sm font-semibold text-black">In Progress</span>
+                            <span class="text-xs text-neutral-500 font-medium mt-0.5">Contractor currently on site</span>
+                        </div>
+                    </div>
+
+                    <!-- Step 5: Completed (Pending) -->
+                    <div class="relative flex gap-4 items-start group">
+                        <div class="w-8 h-8 rounded-full bg-neutral-100 border-[3px] border-white shadow-sm flex-shrink-0 relative z-10"></div>
+                        <div class="flex-1 flex flex-col pt-1">
+                            <span class="text-sm font-medium text-neutral-400">Completed</span>
+                            <span class="text-xs text-neutral-300 font-medium mt-0.5">Awaiting contractor</span>
+                        </div>
+                    </div>
+
+                    <!-- Step 6: Citizen Verified (Pending) -->
+                    <div class="relative flex gap-4 items-start group">
+                        <div class="w-8 h-8 rounded-full bg-neutral-100 border-[3px] border-white shadow-sm flex-shrink-0 relative z-10"></div>
+                        <div class="flex-1 flex flex-col pt-1">
+                            <span class="text-sm font-medium text-neutral-400">Citizen Verified</span>
+                            <span class="text-xs text-neutral-300 font-medium mt-0.5">Awaiting public confirmation</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Right Panel: Contractor Performance (Col Span 4) -->
+        <section class="lg:col-span-4 flex flex-col gap-6 anim-fade-in delay-300">
+            
+            <!-- Contractor Stats Card -->
+            <div class="bg-white border border-neutral-200 rounded-2xl shadow-md p-6">
+                <h2 class="text-lg font-medium text-black tracking-tight mb-5">Contractor Performance</h2>
+                
+                <!-- Profile Row -->
+                <div class="flex items-center gap-3.5 mb-6">
+                    <div class="w-12 h-12 rounded-full bg-neutral-100 border border-neutral-200 flex items-center justify-center text-neutral-600 flex-shrink-0">
+                        <iconify-icon icon="solar:hard-hat-linear" stroke-width="1.5" class="text-2xl"></iconify-icon>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-base font-semibold text-black tracking-tight">Metro Maintenance</span>
+                        <span class="text-xs font-medium text-amber-600 flex items-center gap-1 mt-0.5">
+                            <iconify-icon icon="solar:star-linear" stroke-width="1.5"></iconify-icon> Top 5% Rank
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Stats Grid -->
+                <div class="grid grid-cols-2 gap-3 mb-2">
+                    <div class="flex flex-col gap-1 p-3.5 bg-neutral-50 rounded-xl border border-neutral-100">
+                        <span class="text-xs text-neutral-500 font-medium">On-Time Rate</span>
+                        <span class="text-lg font-semibold text-green-600 tracking-tight">94.5%</span>
+                    </div>
+                    <div class="flex flex-col gap-1 p-3.5 bg-neutral-50 rounded-xl border border-neutral-100">
+                        <span class="text-xs text-neutral-500 font-medium">Avg Resolution</span>
+                        <span class="text-lg font-semibold text-black tracking-tight">1.2 days</span>
+                    </div>
+                    <div class="col-span-2 flex flex-col gap-1 p-3.5 bg-neutral-50 rounded-xl border border-neutral-100">
+                        <span class="text-xs text-neutral-500 font-medium">Reopen Rate</span>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm font-semibold text-black tracking-tight">2.1%</span>
+                            <span class="text-xs font-medium text-neutral-400">Excellent</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Citizen Actions Card -->
+            <div class="bg-white border border-neutral-200 rounded-2xl shadow-md p-6 flex flex-col gap-4">
+                <div class="flex flex-col mb-1">
+                    <h2 class="text-sm font-semibold text-black">Verify Resolution</h2>
+                    <p class="text-xs text-neutral-500 font-medium mt-1 leading-relaxed">As a citizen, your confirmation is required to close this issue permanently.</p>
+                </div>
+                
+                <div class="flex flex-col gap-3">
+                    <button class="w-full py-2.5 bg-black text-white text-sm font-medium rounded-xl hover:bg-neutral-800 transition-colors flex items-center justify-center gap-2 shadow-sm disabled:opacity-50 disabled:cursor-not-allowed">
+                        <iconify-icon icon="solar:check-circle-linear" stroke-width="1.5" class="text-lg"></iconify-icon>
+                        Confirm Fixed
+                    </button>
+                    <button class="w-full py-2.5 bg-white text-red-600 text-sm font-medium rounded-xl border border-red-200 hover:bg-red-50 transition-colors flex items-center justify-center gap-2 shadow-sm disabled:opacity-50 disabled:cursor-not-allowed">
+                        <iconify-icon icon="solar:close-circle-linear" stroke-width="1.5" class="text-lg"></iconify-icon>
+                        Mark Not Fixed
+                    </button>
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+</body></html>

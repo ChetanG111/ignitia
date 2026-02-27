@@ -1,0 +1,285 @@
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Custom Bounce Animation */
+        @keyframes custom-bounce {
+            0% {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+            60% {
+                opacity: 1;
+                transform: translateY(-5px) scale(1.02);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .anim-bounce {
+            opacity: 0;
+            animation: custom-bounce 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        .delay-100 { animation-delay: 100ms; }
+        .delay-200 { animation-delay: 200ms; }
+        .delay-300 { animation-delay: 300ms; }
+        .delay-400 { animation-delay: 400ms; }
+        .delay-500 { animation-delay: 500ms; }
+
+        /* Custom Scrollbar for tables */
+        ::-webkit-scrollbar {
+            height: 6px;
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background-color: #e5e5e5;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-neutral-100 text-neutral-900 min-h-screen flex flex-col selection:bg-black selection:text-white">
+
+    <!-- Header -->
+    <header class="px-8 py-6 anim-bounce">
+        <div class="text-xl font-medium tracking-tighter text-black">A X I S</div>
+    </header>
+
+    <!-- Main Layout: 1-1 Vertical -->
+    <main class="flex-1 flex flex-col px-8 pb-8 gap-8">
+        
+        <!-- Top Section: KPIs -->
+        <section class="flex-1 flex flex-col justify-end">
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 w-full">
+                
+                <!-- KPI Card 1 -->
+                <div class="bg-white border border-neutral-200 rounded-2xl p-6 shadow-md anim-bounce delay-100 flex flex-col justify-between h-40">
+                    <div class="flex justify-between items-start">
+                        <span class="text-sm font-medium text-neutral-500">Total Issues</span>
+                        <div class="w-8 h-8 rounded-full bg-neutral-100 flex items-center justify-center text-black">
+                            <iconify-icon icon="solar:document-text-linear" width="18" stroke-width="1.5"></iconify-icon>
+                        </div>
+                    </div>
+                    <div>
+                        <span class="text-4xl font-semibold tracking-tight text-black">3,842</span>
+                    </div>
+                </div>
+
+                <!-- KPI Card 2 -->
+                <div class="bg-white border border-neutral-200 rounded-2xl p-6 shadow-md anim-bounce delay-200 flex flex-col justify-between h-40">
+                    <div class="flex justify-between items-start">
+                        <span class="text-sm font-medium text-neutral-500">Open %</span>
+                        <div class="w-8 h-8 rounded-full bg-neutral-100 flex items-center justify-center text-black">
+                            <iconify-icon icon="solar:pie-chart-2-linear" width="18" stroke-width="1.5"></iconify-icon>
+                        </div>
+                    </div>
+                    <div>
+                        <span class="text-4xl font-semibold tracking-tight text-black">18.4%</span>
+                    </div>
+                </div>
+
+                <!-- KPI Card 3 -->
+                <div class="bg-white border border-neutral-200 rounded-2xl p-6 shadow-md anim-bounce delay-300 flex flex-col justify-between h-40">
+                    <div class="flex justify-between items-start">
+                        <span class="text-sm font-medium text-neutral-500">Overdue %</span>
+                        <div class="w-8 h-8 rounded-full bg-neutral-100 flex items-center justify-center text-black">
+                            <iconify-icon icon="solar:alarm-linear" width="18" stroke-width="1.5"></iconify-icon>
+                        </div>
+                    </div>
+                    <div>
+                        <span class="text-4xl font-semibold tracking-tight text-black">4.2%</span>
+                    </div>
+                </div>
+
+                <!-- KPI Card 4 -->
+                <div class="bg-white border border-neutral-200 rounded-2xl p-6 shadow-md anim-bounce delay-400 flex flex-col justify-between h-40">
+                    <div class="flex justify-between items-start">
+                        <span class="text-sm font-medium text-neutral-500">Avg Resolution</span>
+                        <div class="w-8 h-8 rounded-full bg-neutral-100 flex items-center justify-center text-black">
+                            <iconify-icon icon="solar:calendar-linear" width="18" stroke-width="1.5"></iconify-icon>
+                        </div>
+                    </div>
+                    <div class="flex items-baseline gap-1.5">
+                        <span class="text-4xl font-semibold tracking-tight text-black">3.6</span>
+                        <span class="text-sm font-medium text-neutral-400">days</span>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Bottom Section: Data Panels -->
+        <section class="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-6 w-full">
+            
+            <!-- Left Panel: Leaderboard -->
+            <div class="bg-white border border-neutral-200 rounded-2xl p-6 shadow-md anim-bounce delay-500 flex flex-col">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-lg font-medium tracking-tight text-black">Contractor Leaderboard</h2>
+                    <button class="text-neutral-400 hover:text-black transition-colors">
+                        <iconify-icon icon="solar:menu-dots-bold" width="20"></iconify-icon>
+                    </button>
+                </div>
+                
+                <div class="overflow-x-auto flex-1">
+                    <table class="w-full text-left border-collapse whitespace-nowrap">
+                        <thead>
+                            <tr class="text-xs text-neutral-400 border-b border-neutral-100">
+                                <th class="pb-3 font-medium w-16">Rank</th>
+                                <th class="pb-3 font-medium">Name</th>
+                                <th class="pb-3 font-medium text-right pr-6">On-Time</th>
+                                <th class="pb-3 font-medium text-right pr-6">Avg Days</th>
+                                <th class="pb-3 font-medium text-right">Reopen</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-sm divide-y divide-neutral-100">
+                            <tr class="group hover:bg-neutral-50 transition-colors">
+                                <td class="py-3.5 text-neutral-400">01</td>
+                                <td class="py-3.5 font-medium text-black">Apex Construction</td>
+                                <td class="py-3.5 text-right pr-6">99.2%</td>
+                                <td class="py-3.5 text-right pr-6">1.8</td>
+                                <td class="py-3.5 text-right">
+                                    <div class="inline-flex items-center gap-2 justify-end">
+                                        <div class="w-1.5 h-1.5 rounded-full bg-green-500"></div>
+                                        <span>0.8%</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="group hover:bg-neutral-50 transition-colors">
+                                <td class="py-3.5 text-neutral-400">02</td>
+                                <td class="py-3.5 font-medium text-black">BuildRite Inc.</td>
+                                <td class="py-3.5 text-right pr-6">96.5%</td>
+                                <td class="py-3.5 text-right pr-6">2.4</td>
+                                <td class="py-3.5 text-right">
+                                    <div class="inline-flex items-center gap-2 justify-end">
+                                        <div class="w-1.5 h-1.5 rounded-full bg-green-500"></div>
+                                        <span>1.4%</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="group hover:bg-neutral-50 transition-colors">
+                                <td class="py-3.5 text-neutral-400">03</td>
+                                <td class="py-3.5 font-medium text-black">Structure Dynamics</td>
+                                <td class="py-3.5 text-right pr-6">88.0%</td>
+                                <td class="py-3.5 text-right pr-6">4.1</td>
+                                <td class="py-3.5 text-right">
+                                    <div class="inline-flex items-center gap-2 justify-end">
+                                        <div class="w-1.5 h-1.5 rounded-full bg-amber-500"></div>
+                                        <span>4.2%</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="group hover:bg-neutral-50 transition-colors">
+                                <td class="py-3.5 text-neutral-400">04</td>
+                                <td class="py-3.5 font-medium text-black">Metro Maintenance</td>
+                                <td class="py-3.5 text-right pr-6">74.5%</td>
+                                <td class="py-3.5 text-right pr-6">7.5</td>
+                                <td class="py-3.5 text-right">
+                                    <div class="inline-flex items-center gap-2 justify-end">
+                                        <div class="w-1.5 h-1.5 rounded-full bg-red-500"></div>
+                                        <span>12.1%</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="group hover:bg-neutral-50 transition-colors border-transparent">
+                                <td class="py-3.5 text-neutral-400">05</td>
+                                <td class="py-3.5 font-medium text-black">Skyline Builders</td>
+                                <td class="py-3.5 text-right pr-6">68.2%</td>
+                                <td class="py-3.5 text-right pr-6">9.2</td>
+                                <td class="py-3.5 text-right">
+                                    <div class="inline-flex items-center gap-2 justify-end">
+                                        <div class="w-1.5 h-1.5 rounded-full bg-red-500"></div>
+                                        <span>15.8%</span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Right Panel: Critical Issues -->
+            <div class="bg-white border border-neutral-200 rounded-2xl p-6 shadow-md anim-bounce delay-500 flex flex-col">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-lg font-medium tracking-tight text-black">High-Severity &amp; Overdue</h2>
+                    <button class="text-neutral-400 hover:text-black transition-colors">
+                        <iconify-icon icon="solar:filter-linear" width="20"></iconify-icon>
+                    </button>
+                </div>
+
+                <div class="overflow-x-auto flex-1">
+                    <table class="w-full text-left border-collapse whitespace-nowrap">
+                        <thead>
+                            <tr class="text-xs text-neutral-400 border-b border-neutral-100">
+                                <th class="pb-3 font-medium w-20">ID</th>
+                                <th class="pb-3 font-medium">Description</th>
+                                <th class="pb-3 font-medium text-right">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-sm divide-y divide-neutral-100">
+                            <tr class="group hover:bg-neutral-50 transition-colors">
+                                <td class="py-3.5 font-mono text-xs text-neutral-400">#9402</td>
+                                <td class="py-3.5 font-medium text-black pr-4 truncate max-w-[200px]">Main server rack thermal alert</td>
+                                <td class="py-3.5 text-right">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded-md bg-red-50 text-red-700 text-xs font-medium border border-red-100">
+                                        -4h overdue
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr class="group hover:bg-neutral-50 transition-colors">
+                                <td class="py-3.5 font-mono text-xs text-neutral-400">#9408</td>
+                                <td class="py-3.5 font-medium text-black pr-4 truncate max-w-[200px]">Elevator shaft flooding</td>
+                                <td class="py-3.5 text-right">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded-md bg-red-50 text-red-700 text-xs font-medium border border-red-100">
+                                        -1h overdue
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr class="group hover:bg-neutral-50 transition-colors">
+                                <td class="py-3.5 font-mono text-xs text-neutral-400">#9415</td>
+                                <td class="py-3.5 font-medium text-black pr-4 truncate max-w-[200px]">HVAC offline in Sector B</td>
+                                <td class="py-3.5 text-right">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded-md bg-amber-50 text-amber-700 text-xs font-medium border border-amber-100">
+                                        2h remaining
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr class="group hover:bg-neutral-50 transition-colors">
+                                <td class="py-3.5 font-mono text-xs text-neutral-400">#9421</td>
+                                <td class="py-3.5 font-medium text-black pr-4 truncate max-w-[200px]">Access control system reset</td>
+                                <td class="py-3.5 text-right">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded-md bg-amber-50 text-amber-700 text-xs font-medium border border-amber-100">
+                                        6h remaining
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr class="group hover:bg-neutral-50 transition-colors border-transparent">
+                                <td class="py-3.5 font-mono text-xs text-neutral-400">#9425</td>
+                                <td class="py-3.5 font-medium text-black pr-4 truncate max-w-[200px]">Fiber optic line exposed</td>
+                                <td class="py-3.5 text-right">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded-md bg-neutral-100 text-neutral-600 text-xs font-medium border border-neutral-200">
+                                        18h remaining
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+</body></html>
