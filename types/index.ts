@@ -11,26 +11,25 @@ export type IssueStatus =
     | "citizen_verified"
     | "reopened";
 
-export interface Location {
-    lat: number;
-    lng: number;
-    zone: string;
-}
-
 export interface Issue {
     id: string;
     title: string;
     description: string;
     severity: Severity;
     status: IssueStatus;
-    location: Location;
+    location: {
+        lat: number;
+        lng: number;
+        zone: string;
+    };
     createdAt: Timestamp;
-    verifiedAt?: Timestamp;
-    assignedAt?: Timestamp;
-    completedAt?: Timestamp;
-    contractorId?: string;
+    verifiedAt?: Timestamp | null;
+    assignedAt?: Timestamp | null;
+    completedAt?: Timestamp | null;
+    contractorId?: string | null;
     confirmationCount: number;
     reopenCount: number;
+    reportedBy?: string;
     imageUrl?: string;
 }
 
@@ -38,11 +37,14 @@ export interface Contractor {
     id: string;
     name: string;
     zone: string;
-    onTimeRate?: number;
-    avgResolutionDays?: number;
-    reopenRate?: number;
-    totalAssigned?: number;
-    performanceScore?: number;
+}
+
+export interface ContractorMetrics {
+    onTimeRate: string;
+    avgResolutionDays: string;
+    reopenRate: string;
+    totalAssigned: number;
+    performanceScore: number;
 }
 
 export interface Confirmation {
@@ -51,11 +53,4 @@ export interface Confirmation {
     userId: string;
     type: "confirm" | "reopen";
     timestamp: Timestamp;
-}
-
-export interface UserProfile {
-    uid: string;
-    name: string;
-    role: "citizen" | "authority";
-    email: string;
 }

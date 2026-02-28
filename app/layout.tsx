@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { DataProvider } from "@/lib/DataContext";
+import { AuthProvider } from "@/lib/AuthContext";
 
 export const metadata: Metadata = {
   title: "AXIS | Transparent Infrastructure Intelligence",
@@ -15,12 +16,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="antialiased selection:bg-black selection:text-white">
-        <DataProvider>
-          {children}
-        </DataProvider>
+        <AuthProvider>
+          <DataProvider>
+            {children}
+          </DataProvider>
+        </AuthProvider>
       </body>
     </html>
   );
 }
-
-
