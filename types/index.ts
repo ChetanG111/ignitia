@@ -51,6 +51,6 @@ export interface Confirmation {
     id: string;
     issueId: string;
     userId: string;
-    type: "confirm" | "reopen";
+    type: "confirm" | "reopen" | "confirm_exists";
     timestamp: Timestamp;
 }

@@ -44,7 +44,7 @@ export default function IssueDetailsPage() {
         fetchData();
     }, [id]);
 
-    const handleAction = async (type: "confirm" | "reopen") => {
+    const handleAction = async (type: "confirm" | "reopen" | "confirm_exists") => {
         if (!issue || actionLoading) return;
         setActionLoading(true);
 
@@ -72,6 +72,7 @@ export default function IssueDetailsPage() {
             } else if (type === "confirm") {
                 updates.status = "citizen_verified";
             }
+            // "confirm_exists" only increments confirmationCount — no status change
 
             await updateDoc(doc(db, "issues", id), updates);
 
@@ -271,6 +272,17 @@ export default function IssueDetailsPage() {
                         </div>
 
                         <div className="flex flex-col gap-3">
+                            {/* Confirm Issue Exists — visible when issue is still open/unresolved */}
+                            {!["completed", "citizen_verified"].includes(issue.status) && (
+                                <button
+                                    onClick={(e) => { e.preventDefault(); handleAction("confirm_exists"); }}
+                                    disabled={actionLoading}
+                                    className="w-full py-2.5 bg-blue-600 text-white text-sm font-medium rounded-xl hover:bg-blue-700 disabled:bg-neutral-400 transition-colors flex items-center justify-center gap-2 shadow-sm"
+                                >
+                                    {actionLoading ? <Icon icon="solar:refresh-linear" className="animate-spin" /> : <Icon icon="solar:eye-linear" />}
+                                    Confirm Issue Exists ({issue.confirmationCount})
+                                </button>
+                            )}
                             <button
                                 onClick={() => handleAction("confirm")}
                                 disabled={actionLoading || issue.status === "citizen_verified"}
