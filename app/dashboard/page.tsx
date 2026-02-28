@@ -93,10 +93,35 @@ export default function PublicDashboardPage() {
             <main className="flex-1 flex flex-col px-8 pb-8 gap-8">
                 <section className="mt-4">
                     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 w-full">
-                        <StatCard label="Total Issues" value={stats?.total.toString() || "0"} icon="solar:document-text-linear" delay="delay-100" />
-                        <StatCard label="Open %" value={stats?.openPercent || "0%"} icon="solar:pie-chart-2-linear" delay="delay-200" />
-                        <StatCard label="Overdue %" value={stats?.overduePercent || "0%"} icon="solar:alarm-linear" delay="delay-300" />
-                        <StatCard label="Avg Resolution" value={stats?.avgRes || "0"} unit="days" icon="solar:calendar-linear" delay="delay-400" />
+                        <StatCard
+                            label="Total Issues"
+                            value={stats?.total.toString() || "0"}
+                            description="Cumulative number of unique reports submitted by citizens to date."
+                            icon="solar:document-text-linear"
+                            delay="delay-100"
+                        />
+                        <StatCard
+                            label="Open %"
+                            value={stats?.openPercent || "0%"}
+                            description="Percentage of reports currently pending action or being resolved."
+                            icon="solar:pie-chart-2-linear"
+                            delay="delay-200"
+                        />
+                        <StatCard
+                            label="Overdue %"
+                            value={stats?.overduePercent || "0%"}
+                            description="Proportion of reports that have exceeded their standard SLA time."
+                            icon="solar:alarm-linear"
+                            delay="delay-300"
+                        />
+                        <StatCard
+                            label="Avg Resolution"
+                            value={stats?.avgRes || "0"}
+                            unit="days"
+                            description="Average time taken from report assignment to final completion."
+                            icon="solar:calendar-linear"
+                            delay="delay-400"
+                        />
                     </div>
                 </section>
 
