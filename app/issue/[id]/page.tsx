@@ -222,7 +222,7 @@ export default function IssueDetailsPage() {
                                 <div className="flex items-start gap-2.5">
                                     <Icon icon="solar:map-point-linear" className="text-lg text-neutral-400 mt-0.5" />
                                     <span className="text-black flex-1">{issue.location.zone}<br />
-                                        <span className="text-xs text-neutral-400 font-normal">Coordinates: {issue.location.lat.toFixed(4)}°, {issue.location.lng.toFixed(4)}°</span>
+                                        <span className="text-xs text-neutral-400 font-normal underline decoration-neutral-200">Reported via AXIS Geo-tagging</span>
                                     </span>
                                 </div>
                                 <div className="flex items-center gap-2.5">

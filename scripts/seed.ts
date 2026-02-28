@@ -27,27 +27,27 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 const CONTRACTORS = [
-    { name: "Apex Construction", zone: "Downtown Core" },
-    { name: "BuildRite Inc.", zone: "West Central" },
-    { name: "Structure Dynamics", zone: "North Central" },
-    { name: "Metro Maintenance", zone: "East Central" },
-    { name: "Skyline Builders", zone: "South Central" },
+    { name: "Telangana Road Corp", zone: "Banjara Hills" },
+    { name: "Hitech Infra", zone: "HITEC City" },
+    { name: "Charminar Heritage Builders", zone: "Charminar" },
+    { name: "Gachibowli Tech-Roads", zone: "Gachibowli" },
+    { name: "Cyberabad Maintenance", zone: "Kukatpally" },
 ];
 
 const SEVERITIES = ["low", "medium", "high", "critical"];
 const STATUSES = ["reported", "verified", "assigned", "in_progress", "completed", "citizen_verified", "reopened"];
 
-// Zone names matching the ZoneMap component
+// Zone names matching the ZoneMap component (Hyderabad)
 const ZONES = [
-    { name: "Northwest District", lat: 40.7220, lng: -74.0100 },
-    { name: "Northeast District", lat: 40.7250, lng: -73.9950 },
-    { name: "North Central", lat: 40.7235, lng: -74.0025 },
-    { name: "West Central", lat: 40.7155, lng: -74.0110 },
-    { name: "Downtown Core", lat: 40.7128, lng: -74.0060 },
-    { name: "East Central", lat: 40.7140, lng: -73.9960 },
-    { name: "Southwest District", lat: 40.7050, lng: -74.0120 },
-    { name: "South Central", lat: 40.7040, lng: -74.0040 },
-    { name: "Southeast District", lat: 40.7030, lng: -73.9960 },
+    { name: "Kukatpally", lat: 17.4933, lng: 78.3847 },
+    { name: "Ameerpet", lat: 17.4375, lng: 78.4482 },
+    { name: "Secunderabad", lat: 17.4399, lng: 78.4983 },
+    { name: "Gachibowli", lat: 17.4401, lng: 78.3489 },
+    { name: "Banjara Hills", lat: 17.4156, lng: 78.4347 },
+    { name: "Begumpet", lat: 17.4447, lng: 78.4664 },
+    { name: "HITEC City", lat: 17.4435, lng: 78.3772 },
+    { name: "Jubilee Hills", lat: 17.4284, lng: 78.4115 },
+    { name: "Charminar", lat: 17.3616, lng: 78.4747 },
 ];
 
 // Mock user IDs to simulate different reporters

@@ -18,15 +18,15 @@ interface AdminZoneMapProps {
 
 // Map zone names to their grid position labels
 const ZONE_GRID: { id: string; name: string; label: string }[] = [
-    { id: "nw", name: "Northwest District", label: "NW" },
-    { id: "nc", name: "North Central", label: "NC" },
-    { id: "ne", name: "Northeast District", label: "NE" },
-    { id: "wc", name: "West Central", label: "WC" },
-    { id: "dc", name: "Downtown Core", label: "DC" },
-    { id: "ec", name: "East Central", label: "EC" },
-    { id: "sw", name: "Southwest District", label: "SW" },
-    { id: "sc", name: "South Central", label: "SC" },
-    { id: "se", name: "Southeast District", label: "SE" },
+    { id: "nw", name: "Kukatpally", label: "KPK" },
+    { id: "nc", name: "Ameerpet", label: "AMT" },
+    { id: "ne", name: "Secunderabad", label: "SCB" },
+    { id: "wc", name: "Gachibowli", label: "GCB" },
+    { id: "dc", name: "Banjara Hills", label: "BNJ" },
+    { id: "ec", name: "Begumpet", label: "BGP" },
+    { id: "sw", name: "HITEC City", label: "HIT" },
+    { id: "sc", name: "Jubilee Hills", label: "JBL" },
+    { id: "se", name: "Charminar", label: "CHM" },
 ];
 
 export default function AdminZoneMap({ zoneData, totalIssues }: AdminZoneMapProps) {
@@ -128,8 +128,8 @@ export default function AdminZoneMap({ zoneData, totalIssues }: AdminZoneMapProp
                     <div className="flex items-center justify-between">
                         <span className="text-xs font-bold text-white/90">{selectedData.name}</span>
                         <span className={`px-1.5 py-0.5 rounded text-[9px] font-bold ${selectedData.status === "Severe" ? "bg-red-500/30 text-red-300" :
-                                selectedData.status === "Warning" ? "bg-amber-500/30 text-amber-300" :
-                                    "bg-emerald-500/30 text-emerald-300"
+                            selectedData.status === "Warning" ? "bg-amber-500/30 text-amber-300" :
+                                "bg-emerald-500/30 text-emerald-300"
                             }`}>
                             {selectedData.status}
                         </span>

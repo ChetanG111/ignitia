@@ -17,16 +17,16 @@ interface ZoneMapProps {
     onZoneSelect: (zone: Zone) => void;
 }
 
-const CITY_ZONES: Zone[] = [
-    { id: "nw", name: "Northwest District", label: "NW", lat: 40.7220, lng: -74.0100, hotspot: false },
-    { id: "ne", name: "Northeast District", label: "NE", lat: 40.7250, lng: -73.9950, hotspot: true },
-    { id: "nc", name: "North Central", label: "NC", lat: 40.7235, lng: -74.0025, hotspot: false },
-    { id: "wc", name: "West Central", label: "WC", lat: 40.7155, lng: -74.0110, hotspot: false },
-    { id: "dc", name: "Downtown Core", label: "DC", lat: 40.7128, lng: -74.0060, hotspot: true },
-    { id: "ec", name: "East Central", label: "EC", lat: 40.7140, lng: -73.9960, hotspot: false },
-    { id: "sw", name: "Southwest District", label: "SW", lat: 40.7050, lng: -74.0120, hotspot: false },
-    { id: "sc", name: "South Central", label: "SC", lat: 40.7040, lng: -74.0040, hotspot: true },
-    { id: "se", name: "Southeast District", label: "SE", lat: 40.7030, lng: -73.9960, hotspot: false },
+export const CITY_ZONES: Zone[] = [
+    { id: "nw", name: "Kukatpally", label: "KPK", lat: 17.4933, lng: 78.3847, hotspot: false },
+    { id: "nc", name: "Ameerpet", label: "AMT", lat: 17.4375, lng: 78.4482, hotspot: true },
+    { id: "ne", name: "Secunderabad", label: "SCB", lat: 17.4399, lng: 78.4983, hotspot: false },
+    { id: "wc", name: "Gachibowli", label: "GCB", lat: 17.4401, lng: 78.3489, hotspot: false },
+    { id: "dc", name: "Banjara Hills", label: "BNJ", lat: 17.4156, lng: 78.4347, hotspot: true },
+    { id: "ec", name: "Begumpet", label: "BGP", lat: 17.4447, lng: 78.4664, hotspot: false },
+    { id: "sw", name: "HITEC City", label: "HIT", lat: 17.4435, lng: 78.3772, hotspot: false },
+    { id: "sc", name: "Jubilee Hills", label: "JBL", lat: 17.4284, lng: 78.4115, hotspot: true },
+    { id: "se", name: "Charminar", label: "CHM", lat: 17.3616, lng: 78.4747, hotspot: false },
 ];
 
 export default function ZoneMap({ selectedZone, onZoneSelect }: ZoneMapProps) {
@@ -127,7 +127,7 @@ export default function ZoneMap({ selectedZone, onZoneSelect }: ZoneMapProps) {
                             </span>
                             <span className={`text-[10px] font-medium leading-tight text-center ${selectedZone === zone.id ? "text-white/80" : "text-neutral-500"
                                 }`}>
-                                {zone.name.replace(" District", "").replace(" Central", "")}
+                                {zone.name}
                             </span>
                         </button>
                     ))}
@@ -141,8 +141,8 @@ export default function ZoneMap({ selectedZone, onZoneSelect }: ZoneMapProps) {
                     <span className="flex-1">
                         {CITY_ZONES.find(z => z.id === selectedZone)?.name}
                     </span>
-                    <span className="text-neutral-400 font-mono text-[10px]">
-                        {CITY_ZONES.find(z => z.id === selectedZone)?.lat.toFixed(4)}°N, {Math.abs(CITY_ZONES.find(z => z.id === selectedZone)?.lng || 0).toFixed(4)}°W
+                    <span className="text-neutral-400 font-medium text-[10px] uppercase tracking-wider">
+                        Active Zone
                     </span>
                 </div>
             )}
@@ -150,5 +150,4 @@ export default function ZoneMap({ selectedZone, onZoneSelect }: ZoneMapProps) {
     );
 }
 
-export { CITY_ZONES };
 export type { Zone };

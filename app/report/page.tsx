@@ -154,16 +154,16 @@ export default function ReportIssuePage() {
 
                     <form onSubmit={handleSubmit} className="flex flex-col flex-1 gap-6">
                         <div>
-                            <label className="text-sm font-medium text-neutral-700 block mb-2">GPS Coordinates</label>
+                            <label className="text-sm font-medium text-neutral-700 block mb-2">Service Zone</label>
                             <div className="relative">
                                 <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
-                                    <Icon icon="solar:routing-2-linear" className="text-neutral-400 text-lg" />
+                                    <Icon icon="solar:map-point-bold-duotone" className="text-neutral-400 text-lg" />
                                 </div>
                                 <input
                                     type="text"
                                     readOnly
-                                    value={`${MOCK_LOCATION.lat.toFixed(4)}° N, ${Math.abs(MOCK_LOCATION.lng).toFixed(4)}° W (${MOCK_LOCATION.zone})`}
-                                    className="w-full pl-10 pr-4 py-2.5 bg-neutral-50 border border-neutral-200 rounded-xl text-sm text-neutral-600 font-mono focus:outline-none cursor-default"
+                                    value={`${MOCK_LOCATION.zone} District`}
+                                    className="w-full pl-10 pr-4 py-2.5 bg-neutral-50 border border-neutral-200 rounded-xl text-sm text-neutral-600 font-medium focus:outline-none cursor-default"
                                 />
                             </div>
                         </div>
