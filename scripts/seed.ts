@@ -101,12 +101,17 @@ async function seed() {
     for (let i = 0; i < 100; i++) {
         const severity = getRandom(SEVERITIES);
         const zoneData = getRandom(ZONES);
-        const status = getRandom(STATUSES);
+        const statusProb = Math.random();
+        const status = statusProb > 0.6 ? "citizen_verified" :
+            statusProb > 0.4 ? "completed" :
+                statusProb > 0.3 ? "in_progress" :
+                    statusProb > 0.2 ? "assigned" :
+                        statusProb > 0.1 ? "verified" : "reported";
         const reportedBy = getRandom(MOCK_USER_IDS);
 
         // Logic for dates
         const createdAt = new Date();
-        createdAt.setDate(createdAt.getDate() - Math.floor(Math.random() * 30)); // Last 30 days
+        createdAt.setDate(createdAt.getDate() - Math.floor(Math.random() * 60)); // Last 60 days
 
         let assignedAt = null;
         let completedAt = null;
@@ -114,18 +119,24 @@ async function seed() {
 
         if (["assigned", "in_progress", "completed", "citizen_verified", "reopened"].includes(status)) {
             assignedAt = new Date(createdAt);
-            assignedAt.setHours(assignedAt.getHours() + Math.floor(Math.random() * 24));
+            assignedAt.setHours(assignedAt.getHours() + Math.floor(Math.random() * 48));
             contractorId = getRandom(contractorIds);
         }
 
         if (["completed", "citizen_verified"].includes(status)) {
             completedAt = new Date(assignedAt!);
-            completedAt.setDate(completedAt.getDate() + Math.floor(Math.random() * 10)); // Resolved in 1-10 days
+            // 85% of repairs take 2-6 days (within SLA)
+            // 15% take 8-15 days (overdue)
+            const daysToComplete = Math.random() > 0.15 ? (2 + Math.floor(Math.random() * 4)) : (8 + Math.floor(Math.random() * 7));
+            completedAt.setDate(completedAt.getDate() + daysToComplete);
         }
 
         // Add slight randomization to coordinates within the zone
         const latJitter = (Math.random() - 0.5) * 0.005;
         const lngJitter = (Math.random() - 0.5) * 0.005;
+
+        // Realistic Reopen Logic: ~5% of completed issues get a reopen report
+        const hasReopen = Math.random() < 0.05;
 
         const issue = {
             title: `${severity.toUpperCase()} Priority: Road damage in ${zoneData.name}`,
@@ -144,8 +155,8 @@ async function seed() {
             contractorId,
             confirmationCount: Math.floor(Math.random() * 10) + 1,
             confirmExistsCount: Math.floor(Math.random() * 5),
-            confirmFixedCount: Math.floor(Math.random() * 3),
-            reopenCount: status === "reopened" ? 3 : Math.floor(Math.random() * 2),
+            confirmFixedCount: ["completed", "citizen_verified"].includes(status) ? (3 + Math.floor(Math.random() * 5)) : Math.floor(Math.random() * 2),
+            reopenCount: status === "reopened" ? 3 : (hasReopen ? 1 : 0),
             imageUrl: "https://images.unsplash.com/photo-1541888086425-d81bb19240f5?w=600&h=600&fit=crop"
         };
 

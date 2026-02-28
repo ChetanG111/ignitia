@@ -1,10 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
-import { Icon } from "@iconify/react";
-import { collection, onSnapshot } from "firebase/firestore";
-import { db } from "@/lib/firebase";
-import { Issue, Contractor, ContractorMetrics } from "@/types";
+import { computeContractorMetrics } from "@/lib/logic";
 
 export default function ContractorPerformancePage() {
     const [issues, setIssues] = useState<Issue[]>([]);
@@ -26,63 +22,18 @@ export default function ContractorPerformancePage() {
     }, []);
 
     const performanceData = useMemo(() => {
-        return contractors.map(c => {
-            const assignedIssues = issues.filter(i => i.contractorId === c.id);
-            const completed = assignedIssues.filter(i => i.status === "completed" || i.status === "citizen_verified");
+        const measuredContractors = computeContractorMetrics(issues, contractors);
 
-            if (assignedIssues.length === 0) return { ...c, metrics: null };
-
-            const onTimeCount = completed.filter(i => {
-                if (!i.assignedAt || !i.completedAt) return false;
-
-                // Safety check for Firestore Timestamp
-                const completedMs = (i.completedAt && typeof i.completedAt.toMillis === 'function')
-                    ? i.completedAt.toMillis()
-                    : (i.completedAt ? (i.completedAt as any).seconds * 1000 : 0);
-
-                const assignedMs = (i.assignedAt && typeof i.assignedAt.toMillis === 'function')
-                    ? i.assignedAt.toMillis()
-                    : (i.assignedAt ? (i.assignedAt as any).seconds * 1000 : 0);
-
-                const SLA_PERIOD = 7 * 24 * 60 * 60 * 1000;
-                return (completedMs - assignedMs) <= SLA_PERIOD;
-            }).length;
-
-            const onTimeRate = completed.length > 0 ? (onTimeCount / completed.length) : 0;
-            const reopenRate = completed.length > 0 ? (assignedIssues.filter(i => i.reopenCount > 0).length / completed.length) : 0;
-
-            const totalResDays = completed.reduce((acc, i) => {
-                const completedMs = (i.completedAt && typeof i.completedAt.toMillis === 'function')
-                    ? i.completedAt.toMillis()
-                    : (i.completedAt ? (i.completedAt as any).seconds * 1000 : 0);
-
-                const assignedMs = (i.assignedAt && typeof i.assignedAt.toMillis === 'function')
-                    ? i.assignedAt.toMillis()
-                    : (i.assignedAt ? (i.assignedAt as any).seconds * 1000 : 0);
-
-                return acc + (completedMs - assignedMs) / (1000 * 60 * 60 * 24);
-            }, 0);
-            const avgResolutionDays = completed.length > 0 ? totalResDays / completed.length : 0;
-
-            // Score formula: (0.5 * On-time %) + (0.3 * Inverse Avg Days) - (0.2 * Reopen Rate)
-            const inverseAvgDays = avgResolutionDays > 0 ? Math.min(1.5, 7 / avgResolutionDays) : 0;
-            const score = (0.5 * onTimeRate) + (0.3 * inverseAvgDays) - (0.2 * reopenRate);
-
-            return {
-                ...c,
-                metrics: {
-                    onTimeRate: (onTimeRate * 100).toFixed(1) + "%",
-                    avgResolutionDays: avgResolutionDays.toFixed(1) + "d",
-                    reopenRate: (reopenRate * 100).toFixed(1) + "%",
-                    totalAssigned: assignedIssues.length,
-                    performanceScore: Math.max(0, Math.min(100, score * 100)).toFixed(0)
-                }
-            };
-        }).sort((a, b) => {
-            const scoreA = a.metrics ? parseInt(a.metrics.performanceScore) : 0;
-            const scoreB = b.metrics ? parseInt(b.metrics.performanceScore) : 0;
-            return scoreB - scoreA;
-        });
+        return measuredContractors.map(c => ({
+            ...c,
+            metrics: {
+                onTimeRate: (c.onTimeRate ?? 0).toFixed(1) + "%",
+                avgResolutionDays: (c.avgResolutionDays ?? 0).toFixed(1) + "d",
+                reopenRate: (c.reopenRate ?? 0).toFixed(1) + "%",
+                totalAssigned: c.totalAssigned || 0,
+                performanceScore: (c.performanceScore ?? 0).toFixed(0)
+            }
+        }));
     }, [issues, contractors]);
 
     if (loading) return (

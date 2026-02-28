@@ -56,18 +56,18 @@ export const computeContractorMetrics = (issues: Issue[], contractors: Contracto
         const contractorIssues = issues.filter((i) => i.contractorId === contractor.id);
         const completedIssues = contractorIssues.filter((i) => i.status === "completed" || i.status === "citizen_verified");
 
-        if (completedIssues.length === 0) {
+        if (contractorIssues.length === 0) {
             return {
                 ...contractor,
                 onTimeRate: 100,
                 avgResolutionDays: 0,
                 reopenRate: 0,
-                totalAssigned: contractorIssues.length,
+                totalAssigned: 0,
                 performanceScore: 0,
             };
         }
 
-        // On-Time Rate
+        // On-Time Rate: % of completed issues that were done within SLA
         const onTimeCount = completedIssues.filter((i) => {
             if (!i.assignedAt || !i.completedAt) return true;
             const deadline = new Date(i.assignedAt.toDate());
@@ -75,7 +75,7 @@ export const computeContractorMetrics = (issues: Issue[], contractors: Contracto
             return i.completedAt.toDate() <= deadline;
         }).length;
 
-        const onTimeRate = (onTimeCount / completedIssues.length) * 100;
+        const onTimeRate = completedIssues.length > 0 ? (onTimeCount / completedIssues.length) * 100 : 100;
 
         // Avg Resolution Days
         const resolutionDays = completedIssues.map((i) => {
@@ -83,17 +83,19 @@ export const computeContractorMetrics = (issues: Issue[], contractors: Contracto
             const diffMs = i.completedAt.toDate().getTime() - i.assignedAt.toDate().getTime();
             return diffMs / (1000 * 60 * 60 * 24);
         });
-        const avgResolutionDays = resolutionDays.reduce((a, b) => a + b, 0) / completedIssues.length;
+        const avgResolutionDays = completedIssues.length > 0 ? resolutionDays.reduce((a, b) => a + b, 0) / completedIssues.length : 0;
 
-        // Reopen Rate
+        // Reopen Rate: % of ALL assigned issues that have had at least one reopen report
+        // This is a more realistic "Defect Rate" than dividing by a small subset of completions
         const reopenedCount = contractorIssues.filter((i) => i.reopenCount > 0).length;
-        const reopenRate = (reopenedCount / completedIssues.length) * 100;
+        const reopenRate = (reopenedCount / contractorIssues.length) * 100;
 
-        // Performance Score Formula (from TDD)
-        // score = (0.5 * onTimeRate) + (0.3 * inverse(avgResolutionDays)) - (0.2 * reopenRate)
-        // Adjusted for a 0-100 scale
-        const invAvgDaysScore = Math.max(0, 100 - (avgResolutionDays * 10)); // 10 days = 0 score for this component
-        const score = (0.5 * onTimeRate) + (0.3 * invAvgDaysScore) - (0.2 * reopenRate);
+        // Performance Score Formula (0-100)
+        // 50% On-time, 30% Resolution Speed, 20% Quality (Inverse Reopen)
+        const speedScore = Math.max(0, 100 - (avgResolutionDays * 5)); // 20 days = 0 score
+        const qualityScore = Math.max(0, 100 - (reopenRate * 2)); // 50% reopen = 0 score
+
+        const score = (0.5 * onTimeRate) + (0.3 * speedScore) + (0.2 * qualityScore);
 
         return {
             ...contractor,

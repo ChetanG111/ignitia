@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 interface Option {
     label: string | React.ReactNode;
     value: string;
+    disabled?: boolean;
 }
 
 interface SelectProps {
@@ -80,12 +81,15 @@ export default function Select({
                             <li key={option.value}>
                                 <button
                                     type="button"
+                                    disabled={option.disabled}
                                     onClick={() => {
                                         onChange(option.value);
                                         setIsOpen(false);
                                     }}
-                                    className={`w-full text-left px-4 py-2.5 text-sm font-medium transition-all hover:bg-neutral-50 flex items-center justify-between group ${value === option.value ? "text-black bg-neutral-50/50" : "text-neutral-600 hover:text-black"
-                                        }`}
+                                    className={`w-full text-left px-4 py-2.5 text-sm font-medium transition-all flex items-center justify-between group 
+                                        ${value === option.value ? "text-black bg-neutral-50/50" : "text-neutral-600 hover:text-black"}
+                                        ${option.disabled ? "opacity-30 cursor-not-allowed bg-neutral-50/20" : "hover:bg-neutral-50"}
+                                    `}
                                 >
                                     <span>{option.label}</span>
                                     {value === option.value && (

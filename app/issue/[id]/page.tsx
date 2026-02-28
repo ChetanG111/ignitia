@@ -336,8 +336,9 @@ export default function IssueDetailsPage() {
                             )}
                             <button
                                 onClick={() => handleAction("confirm")}
-                                disabled={actionLoading || issue.status === "citizen_verified" || hasFinalDecision}
-                                className="w-full py-2.5 bg-black text-white text-sm font-medium rounded-xl hover:bg-neutral-800 disabled:bg-neutral-300 disabled:text-white/50 transition-colors flex items-center justify-center gap-2 shadow-sm"
+                                disabled={actionLoading || issue.status !== "completed" || hasFinalDecision}
+                                className="w-full py-2.5 bg-black text-white text-sm font-medium rounded-xl hover:bg-neutral-800 disabled:bg-neutral-100 disabled:text-neutral-400 transition-colors flex items-center justify-center gap-2 shadow-sm"
+                                title={issue.status !== "completed" ? "Cycle not finished (Contractor must complete work first)" : "Confirm the repair is successful"}
                             >
                                 {actionLoading ? <Icon icon="solar:refresh-linear" className="animate-spin" /> : <Icon icon="solar:check-circle-linear" />}
                                 {issue.status === "citizen_verified" ? "Officially Verified" : `Confirm Fixed (${issue.confirmFixedCount || 0})`}
