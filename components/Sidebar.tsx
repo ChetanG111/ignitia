@@ -17,8 +17,11 @@ export default function Sidebar() {
     return (
         <aside className="w-full lg:w-64 flex-shrink-0 bg-white border-b lg:border-b-0 lg:border-r border-neutral-200 z-30 flex flex-col">
             {/* Logo */}
-            <div className="h-16 px-6 flex items-center border-b border-neutral-200 flex-shrink-0">
-                <Link href="/admin" className="font-medium text-lg tracking-tighter">AUTH.</Link>
+            <div className="h-16 px-6 flex items-center border-b border-neutral-200 flex-shrink-0 justify-between">
+                <Link href="/admin" className="font-medium text-lg tracking-tighter">A X I S</Link>
+                <Link href="/dashboard" className="text-neutral-400 hover:text-black transition-colors" title="Public View">
+                    <Icon icon="solar:globus-linear" className="text-xl" />
+                </Link>
             </div>
 
             {/* Navigation Menu */}
@@ -30,8 +33,8 @@ export default function Sidebar() {
                             key={item.href}
                             href={item.href}
                             className={`flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium text-sm transition-colors ${isActive
-                                    ? "bg-neutral-100 text-black"
-                                    : "text-neutral-500 hover:text-black hover:bg-neutral-50"
+                                ? "bg-neutral-100 text-black"
+                                : "text-neutral-500 hover:text-black hover:bg-neutral-50"
                                 }`}
                         >
                             <Icon icon={item.icon} className="text-lg" />
