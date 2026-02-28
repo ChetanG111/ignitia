@@ -1,5 +1,6 @@
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
 import {
     initializeAuth,
     getAuth,
@@ -45,4 +46,6 @@ if (getApps().length > 1) {
     }
 }
 
-export { app, db, auth };
+const storage = getStorage(app);
+
+export { app, db, auth, storage };

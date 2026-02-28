@@ -5,11 +5,13 @@ import { Icon } from "@iconify/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { collection, query, where, getDocs, addDoc, updateDoc, doc, increment, serverTimestamp } from "firebase/firestore";
-import { db } from "@/lib/firebase";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { db, storage } from "@/lib/firebase";
 import { Severity, Issue } from "@/types";
 import { getHigherSeverity, getEscalatedSeverity } from "@/lib/utils";
 import { useAuth } from "@/lib/AuthContext";
 import ZoneMap, { CITY_ZONES, Zone } from "@/components/ZoneMap";
+import { useRef } from "react";
 
 export default function ReportIssuePage() {
     const router = useRouter();
@@ -18,6 +20,9 @@ export default function ReportIssuePage() {
     const [description, setDescription] = useState("");
     const [loading, setLoading] = useState(false);
     const [selectedZoneId, setSelectedZoneId] = useState<string | null>("dc"); // default Downtown Core
+    const [selectedFile, setSelectedFile] = useState<File | null>(null);
+    const [imagePreview, setImagePreview] = useState<string | null>(null);
+    const fileInputRef = useRef<HTMLInputElement>(null);
 
     // Get selected zone data
     const selectedZone = CITY_ZONES.find(z => z.id === selectedZoneId);
@@ -31,11 +36,40 @@ export default function ReportIssuePage() {
         setSelectedZoneId(zone.id);
     };
 
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            setSelectedFile(file);
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setImagePreview(reader.result as string);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
+    const clearImage = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        setSelectedFile(null);
+        setImagePreview(null);
+        if (fileInputRef.current) {
+            fileInputRef.current.value = "";
+        }
+    };
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
 
         try {
+            let uploadedImageUrl = "https://images.unsplash.com/photo-1541888086425-d81bb19240f5?w=600&h=600&fit=crop";
+
+            if (selectedFile) {
+                const storageRef = ref(storage, `issue_images/${Date.now()}_${selectedFile.name}`);
+                const snapshot = await uploadBytes(storageRef, selectedFile);
+                uploadedImageUrl = await getDownloadURL(snapshot.ref);
+            }
+
             // 1. Duplicate Detection (TDD Section 11)
             // Check for open issues in the same zone
             const q = query(
@@ -94,7 +128,7 @@ export default function ReportIssuePage() {
                     confirmExistsCount: 1,
                     confirmFixedCount: 0,
                     reopenCount: 0,
-                    imageUrl: "https://images.unsplash.com/photo-1541888086425-d81bb19240f5?w=600&h=600&fit=crop"
+                    imageUrl: uploadedImageUrl
                 };
                 const docRef = await addDoc(collection(db, "issues"), newIssue);
                 targetIssueId = docRef.id;
@@ -124,12 +158,39 @@ export default function ReportIssuePage() {
                 <div className="w-full md:w-5/12 p-6 md:p-8 flex flex-col gap-6 bg-white border-b md:border-b-0 md:border-r border-neutral-200">
                     <div className="flex-1 flex flex-col">
                         <label className="text-sm font-medium text-neutral-700 mb-2 block">Evidence Media</label>
-                        <div className="flex-1 min-h-[200px] border-2 border-dashed border-neutral-200 rounded-xl bg-neutral-50 hover:bg-neutral-100/50 hover:border-black transition-all cursor-pointer flex flex-col items-center justify-center text-center p-6 group">
-                            <div className="w-12 h-12 rounded-full bg-white border border-neutral-200 shadow-sm flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
-                                <Icon icon="solar:camera-add-linear" className="text-xl text-neutral-600" />
-                            </div>
-                            <span className="text-sm font-medium text-neutral-800">Drag & drop files here</span>
-                            <span className="text-xs text-neutral-500 mt-1">or click to browse from device</span>
+                        <div
+                            onClick={() => fileInputRef.current?.click()}
+                            className="flex-1 min-h-[200px] border-2 border-dashed border-neutral-200 rounded-xl bg-neutral-50 hover:bg-neutral-100/50 hover:border-black transition-all cursor-pointer flex flex-col items-center justify-center text-center p-6 group relative overflow-hidden"
+                        >
+                            {imagePreview ? (
+                                <>
+                                    <img src={imagePreview} alt="Preview" className="absolute inset-0 w-full h-full object-cover" />
+                                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
+                                        <button
+                                            type="button"
+                                            onClick={clearImage}
+                                            className="w-10 h-10 rounded-full bg-white text-red-500 shadow-md flex items-center justify-center hover:scale-110 transition-transform"
+                                        >
+                                            <Icon icon="solar:trash-bin-trash-bold" className="text-xl" />
+                                        </button>
+                                    </div>
+                                </>
+                            ) : (
+                                <>
+                                    <div className="w-12 h-12 rounded-full bg-white border border-neutral-200 shadow-sm flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
+                                        <Icon icon="solar:camera-add-linear" className="text-xl text-neutral-600" />
+                                    </div>
+                                    <span className="text-sm font-medium text-neutral-800">Drag & drop files here</span>
+                                    <span className="text-xs text-neutral-500 mt-1">or click to browse from device</span>
+                                </>
+                            )}
+                            <input
+                                type="file"
+                                ref={fileInputRef}
+                                onChange={handleFileChange}
+                                accept="image/*"
+                                className="hidden"
+                            />
                         </div>
                     </div>
 
