@@ -71,6 +71,11 @@ export default function IssuesFeedPage() {
                 if (slaA !== slaB) return slaA ? -1 : 1;
             }
 
+            // Priority 2: Has high-quality image (for demo)
+            const hasImgA = a.imageUrl ? 1 : 0;
+            const hasImgB = b.imageUrl ? 1 : 0;
+            if (hasImgA !== hasImgB) return hasImgB - hasImgA;
+
             // Then by Severity
             if (severityOrder[a.severity] !== severityOrder[b.severity]) {
                 return severityOrder[a.severity] - severityOrder[b.severity];

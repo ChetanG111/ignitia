@@ -41,14 +41,7 @@ export default function IssueCard({
 
     return (
         <Link href={`/issue/${id}`} className="block">
-            <div className={`bg-white border border-neutral-200 rounded-2xl p-5 shadow-md flex flex-col sm:flex-row gap-5 anim-bounce ${delay} hover:border-black transition-all cursor-pointer group`}>
-                {/* Thumbnail */}
-                <img
-                    src={imageUrl}
-                    alt={title}
-                    className="w-full sm:w-28 h-48 sm:h-auto object-cover rounded-xl border border-neutral-100 flex-shrink-0 group-hover:opacity-90 transition-opacity"
-                />
-
+            <div className={`bg-white border border-neutral-200 rounded-2xl p-5 shadow-md flex flex-col gap-5 anim-bounce ${delay} hover:border-black transition-all cursor-pointer group`}>
                 {/* Content */}
                 <div className="flex-1 flex flex-col justify-between">
                     {/* Top Row */}

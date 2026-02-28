@@ -41,6 +41,7 @@ export default function PublicDashboardPage() {
 
         return {
             total,
+            open,
             openPercent: ((open / total) * 100).toFixed(1) + "%",
             overduePercent: ((overdueCount / total) * 100).toFixed(1) + "%",
             avgRes: avgRes.toFixed(1)
@@ -101,10 +102,10 @@ export default function PublicDashboardPage() {
                             delay="delay-100"
                         />
                         <StatCard
-                            label="Open %"
-                            value={stats?.openPercent || "0%"}
-                            description="Percentage of reports currently pending action or being resolved."
-                            icon="solar:pie-chart-2-linear"
+                            label="Open"
+                            value={stats?.open.toString() || "0"}
+                            description="Total number of reports currently pending action or being resolved."
+                            icon="solar:inbox-in-linear"
                             delay="delay-200"
                         />
                         <StatCard

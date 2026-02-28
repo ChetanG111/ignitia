@@ -138,6 +138,28 @@ async function seed() {
         // Realistic Reopen Logic: ~5% of completed issues get a reopen report
         const hasReopen = Math.random() < 0.05;
 
+        const POTHOLE_IMAGES = [
+            "https://images.unsplash.com/photo-1541888086425-d81bb19240f5?w=800&q=80&fit=crop",
+            "https://images.unsplash.com/photo-1596487048032-0fe0017ad371?w=800&q=80&fit=crop",
+            "https://images.unsplash.com/photo-1584467541268-b040f83be3fd?w=800&q=80&fit=crop",
+            "https://images.unsplash.com/OOiAy2lBZc?w=800&q=80&fit=crop",
+            "https://images.unsplash.com/MQjJHTT-diQ?w=800&q=80&fit=crop",
+            "https://media.istockphoto.com/id/502561495/photo/pot-holed-road.webp?a=1&b=1&s=612x612&w=0&k=20&c=S9FvmjGBw3BU0YVF7MSD0auwNo2G_83vOvSrwvxFWVM=",
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCwIC0GZUMMXshPCy_IinSe-iBuuJaqx33-Z7AYmkwdNS9B1BNaYVsIks&s",
+            "https://akm-img-a-in.tosshub.com/indiatoday/images/story/201707/mumbai_potholes_story_647_072117032707.jpg",
+            "https://www.deccanherald.com/sites/dh/files/articleimages/2022/11/04/pothole-1159392-1667554541.jpg",
+            "https://i.ndtvimg.com/i/2018-07/mumbai-potholes-generic-istock_650x400_81531474922.jpg",
+            "https://images.unsplash.com/photo-1515162305285-0293e4767cc2?w=800&q=80&fit=crop",
+            "https://images.unsplash.com/photo-1621293954908-907159247fc8?w=800&q=80&fit=crop",
+            "https://images.unsplash.com/photo-1547949003-9792a18a2601?w=800&q=80&fit=crop",
+            "https://images.unsplash.com/photo-1599387737281-893a95ff0e8e?w=800&q=80&fit=crop",
+            "https://images.unsplash.com/photo-1621430030588-46603a105825?w=800&q=80&fit=crop",
+            "https://images.unsplash.com/photo-1533230408708-8f9f91d1235a?w=800&q=80&fit=crop",
+            "https://images.unsplash.com/photo-1589118949245-7d38baf380d6?w=800&q=80&fit=crop",
+            "https://images.unsplash.com/photo-1605647540924-852290f6b0d5?w=800&q=80&fit=crop",
+            "https://images.unsplash.com/photo-1588654522434-31121d586161?w=800&q=80&fit=crop"
+        ];
+
         const issue = {
             title: `${severity.toUpperCase()} Priority: Road damage in ${zoneData.name}`,
             description: "Automated mock report for platform demonstration. High resolution data analysis required.",
@@ -157,7 +179,7 @@ async function seed() {
             confirmExistsCount: Math.floor(Math.random() * 5),
             confirmFixedCount: ["completed", "citizen_verified"].includes(status) ? (3 + Math.floor(Math.random() * 5)) : Math.floor(Math.random() * 2),
             reopenCount: status === "reopened" ? 3 : (hasReopen ? 1 : 0),
-            imageUrl: "https://images.unsplash.com/photo-1541888086425-d81bb19240f5?w=600&h=600&fit=crop"
+            imageUrl: `https://images.unsplash.com/${getRandom(POTHOLE_IMAGES)}?w=800&q=80&fit=crop`
         };
 
         const docRef = await addDoc(collection(db, "issues"), issue);
