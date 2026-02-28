@@ -163,7 +163,7 @@ export default function IssuesFeedPage() {
                                     location={issue.location.zone}
                                     contractor={contractors[issue.contractorId || ""] || "Unassigned"}
                                     onTimeRate="--" // Contractor metrics will be next
-                                    confirmations={issue.confirmationCount}
+                                    confirmations={(issue.confirmExistsCount || 0) + (issue.confirmFixedCount || 0)}
                                     openDays={calculateOpenDays(issue.createdAt)}
                                     overdueText={overdueText}
                                     imageUrl={issue.imageUrl || "https://images.unsplash.com/photo-1541888086425-d81bb19240f5?w=300&h=300&fit=crop"}

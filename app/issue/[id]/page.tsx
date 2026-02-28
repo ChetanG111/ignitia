@@ -4,18 +4,21 @@ import { useState, useEffect } from "react";
 import { Icon } from "@iconify/react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import { doc, getDoc, updateDoc, increment, addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { doc, getDoc, updateDoc, increment, addDoc, collection, serverTimestamp, query, where, getDocs, limit } from "firebase/firestore";
 import { db } from "@/lib/firebase";
-import { Issue, Contractor, IssueStatus } from "@/types";
+import { Issue, Contractor, IssueStatus, Confirmation } from "@/types";
 import { calculateSLA, calculateOpenDays, formatStatus } from "@/lib/utils";
+import { useAuth } from "@/lib/AuthContext";
 
 export default function IssueDetailsPage() {
     const params = useParams();
     const router = useRouter();
     const id = params.id as string;
 
+    const { user } = useAuth();
     const [issue, setIssue] = useState<Issue | null>(null);
     const [contractor, setContractor] = useState<Contractor | null>(null);
+    const [userConfirmations, setUserConfirmations] = useState<Confirmation[]>([]);
     const [loading, setLoading] = useState(true);
     const [actionLoading, setActionLoading] = useState(false);
 
@@ -38,47 +41,86 @@ export default function IssueDetailsPage() {
                     setContractor({ id: contractorDoc.id, ...contractorDoc.data() } as Contractor);
                 }
             }
+
+            // Check for existing confirmations by this user
+            if (user) {
+                const q = query(
+                    collection(db, "confirmations"),
+                    where("issueId", "==", id),
+                    where("userId", "==", user.uid)
+                );
+                const confirmSnap = await getDocs(q);
+                const confirms = confirmSnap.docs.map(doc => ({ id: doc.id, ...doc.data() } as Confirmation));
+                setUserConfirmations(confirms);
+            }
+
             setLoading(false);
         };
 
         fetchData();
-    }, [id]);
+    }, [id, user]);
+
+    const hasConfirmExists = userConfirmations.some(c => c.type === "confirm_exists");
+    const hasFinalDecision = userConfirmations.some(c => c.type === "confirm" || c.type === "reopen");
 
     const handleAction = async (type: "confirm" | "reopen" | "confirm_exists") => {
         if (!issue || actionLoading) return;
+        if (hasFinalDecision) return;
+        if (type === "confirm_exists" && hasConfirmExists) return;
+
+        if (!user) {
+            router.push("/login?redirect=" + encodeURIComponent(window.location.pathname));
+            return;
+        }
         setActionLoading(true);
 
         try {
             // 1. Add confirmation record
             await addDoc(collection(db, "confirmations"), {
                 issueId: id,
-                userId: "mock-user-id", // In a real app, use auth.currentUser.uid
+                userId: user.uid,
                 type,
                 timestamp: serverTimestamp()
             });
 
             // 2. Update issue counts and status
-            const updates: any = {
-                confirmationCount: increment(1)
-            };
+            const updates: any = {};
 
             if (type === "reopen") {
-                const newReopenCount = issue.reopenCount + 1;
+                const newReopenCount = (issue.reopenCount || 0) + 1;
                 updates.reopenCount = increment(1);
+                updates.confirmationCount = increment(1);
                 if (newReopenCount >= 3) {
                     updates.status = "reopened";
                     updates.assignedAt = serverTimestamp(); // Reset SLA
                 }
             } else if (type === "confirm") {
-                updates.status = "citizen_verified";
+                const newConfirmFixedCount = (issue.confirmFixedCount || 0) + 1;
+                updates.confirmFixedCount = increment(1);
+                updates.confirmationCount = increment(1);
+                // Require 3 citizens to verify it's fixed before updating status
+                if (newConfirmFixedCount >= 3) {
+                    updates.status = "citizen_verified";
+                }
+            } else if (type === "confirm_exists") {
+                updates.confirmExistsCount = increment(1);
+                updates.confirmationCount = increment(1);
             }
-            // "confirm_exists" only increments confirmationCount — no status change
 
             await updateDoc(doc(db, "issues", id), updates);
 
             // Refresh local state
             const refreshedDoc = await getDoc(doc(db, "issues", id));
             setIssue({ id: refreshedDoc.id, ...refreshedDoc.data() } as Issue);
+
+            // Refresh user confirmations
+            const q = query(
+                collection(db, "confirmations"),
+                where("issueId", "==", id),
+                where("userId", "==", user.uid)
+            );
+            const confirmSnap = await getDocs(q);
+            setUserConfirmations(confirmSnap.docs.map(doc => ({ id: doc.id, ...doc.data() } as Confirmation)));
         } catch (error) {
             console.error("Action failed:", error);
         } finally {
@@ -189,7 +231,7 @@ export default function IssueDetailsPage() {
                                 </div>
                                 <div className="flex items-center gap-2.5">
                                     <Icon icon="solar:users-group-two-rounded-linear" className="text-lg text-neutral-400" />
-                                    <span className="text-black">{issue.confirmationCount} public confirmations</span>
+                                    <span className="text-black">{(issue.confirmExistsCount || 0) + (issue.confirmFixedCount || 0)} public confirmations</span>
                                 </div>
                                 <div className="flex items-center gap-2.5 mt-1">
                                     <Icon icon="solar:hashtag-linear" className="text-lg text-neutral-400" />
@@ -272,32 +314,41 @@ export default function IssueDetailsPage() {
                         </div>
 
                         <div className="flex flex-col gap-3">
+                            {hasFinalDecision && (
+                                <div className="p-3 bg-neutral-50 rounded-xl border border-neutral-100 flex items-center gap-3 mb-2">
+                                    <Icon icon="solar:info-circle-linear" className="text-xl text-neutral-400" />
+                                    <p className="text-xs font-medium text-neutral-600">
+                                        You have already submitted a final verification for this issue.
+                                    </p>
+                                </div>
+                            )}
+
                             {/* Confirm Issue Exists — visible when issue is still open/unresolved */}
                             {!["completed", "citizen_verified"].includes(issue.status) && (
                                 <button
                                     onClick={(e) => { e.preventDefault(); handleAction("confirm_exists"); }}
-                                    disabled={actionLoading}
-                                    className="w-full py-2.5 bg-blue-600 text-white text-sm font-medium rounded-xl hover:bg-blue-700 disabled:bg-neutral-400 transition-colors flex items-center justify-center gap-2 shadow-sm"
+                                    disabled={actionLoading || hasConfirmExists || hasFinalDecision}
+                                    className="w-full py-2.5 bg-blue-600 text-white text-sm font-medium rounded-xl hover:bg-blue-700 disabled:bg-neutral-300 disabled:text-white/50 transition-colors flex items-center justify-center gap-2 shadow-sm"
                                 >
                                     {actionLoading ? <Icon icon="solar:refresh-linear" className="animate-spin" /> : <Icon icon="solar:eye-linear" />}
-                                    Confirm Issue Exists ({issue.confirmationCount})
+                                    {hasConfirmExists ? "You Confirmed This Exists" : `Confirm Issue Exists (${issue.confirmExistsCount || 0})`}
                                 </button>
                             )}
                             <button
                                 onClick={() => handleAction("confirm")}
-                                disabled={actionLoading || issue.status === "citizen_verified"}
-                                className="w-full py-2.5 bg-black text-white text-sm font-medium rounded-xl hover:bg-neutral-800 disabled:bg-neutral-400 transition-colors flex items-center justify-center gap-2 shadow-sm"
+                                disabled={actionLoading || issue.status === "citizen_verified" || hasFinalDecision}
+                                className="w-full py-2.5 bg-black text-white text-sm font-medium rounded-xl hover:bg-neutral-800 disabled:bg-neutral-300 disabled:text-white/50 transition-colors flex items-center justify-center gap-2 shadow-sm"
                             >
                                 {actionLoading ? <Icon icon="solar:refresh-linear" className="animate-spin" /> : <Icon icon="solar:check-circle-linear" />}
-                                {issue.status === "citizen_verified" ? "Already Verified" : "Confirm Fixed"}
+                                {issue.status === "citizen_verified" ? "Officially Verified" : `Confirm Fixed (${issue.confirmFixedCount || 0})`}
                             </button>
                             <button
                                 onClick={() => handleAction("reopen")}
-                                disabled={actionLoading}
-                                className="w-full py-2.5 bg-white text-red-600 text-sm font-medium rounded-xl border border-red-200 hover:bg-red-50 disabled:opacity-50 transition-colors flex items-center justify-center gap-2 shadow-sm"
+                                disabled={actionLoading || hasFinalDecision}
+                                className="w-full py-2.5 bg-white text-red-600 text-sm font-medium rounded-xl border border-red-200 hover:bg-red-50 disabled:opacity-50 disabled:bg-neutral-50 disabled:text-neutral-300 disabled:border-neutral-100 transition-colors flex items-center justify-center gap-2 shadow-sm"
                             >
                                 {actionLoading ? <Icon icon="solar:refresh-linear" className="animate-spin" /> : <Icon icon="solar:close-circle-linear" />}
-                                Report Not Fixed ({issue.reopenCount})
+                                Report Not Fixed ({issue.reopenCount || 0})
                             </button>
                         </div>
                     </div>

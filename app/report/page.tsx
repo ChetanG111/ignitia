@@ -63,6 +63,7 @@ export default function ReportIssuePage() {
 
                 await updateDoc(doc(db, "issues", targetIssueId), {
                     confirmationCount: increment(1),
+                    confirmExistsCount: increment(1),
                     severity: escalatedSeverity,
                     // Refresh title with updated priority level
                     title: `${escalatedSeverity.toUpperCase()} Priority: Road damage in ${MOCK_LOCATION.zone}`
@@ -90,6 +91,8 @@ export default function ReportIssuePage() {
                     completedAt: null,
                     contractorId: null,
                     confirmationCount: 1,
+                    confirmExistsCount: 1,
+                    confirmFixedCount: 0,
                     reopenCount: 0,
                     imageUrl: "https://images.unsplash.com/photo-1541888086425-d81bb19240f5?w=600&h=600&fit=crop"
                 };

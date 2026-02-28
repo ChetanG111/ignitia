@@ -143,6 +143,8 @@ async function seed() {
             completedAt: completedAt ? Timestamp.fromDate(completedAt) : null,
             contractorId,
             confirmationCount: Math.floor(Math.random() * 10) + 1,
+            confirmExistsCount: Math.floor(Math.random() * 5),
+            confirmFixedCount: Math.floor(Math.random() * 3),
             reopenCount: status === "reopened" ? 3 : Math.floor(Math.random() * 2),
             imageUrl: "https://images.unsplash.com/photo-1541888086425-d81bb19240f5?w=600&h=600&fit=crop"
         };

@@ -218,8 +218,8 @@ export default function MyReportsPage() {
                                 key={tab.id}
                                 onClick={() => setActiveTab(tab.id)}
                                 className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${activeTab === tab.id
-                                        ? "bg-black text-white shadow-sm"
-                                        : "text-neutral-500 hover:text-black hover:bg-neutral-50"
+                                    ? "bg-black text-white shadow-sm"
+                                    : "text-neutral-500 hover:text-black hover:bg-neutral-50"
                                     }`}
                             >
                                 <Icon icon={tab.icon} className="text-base" />
@@ -305,7 +305,7 @@ export default function MyReportsPage() {
                                                 </span>
                                                 <span className="flex items-center gap-1">
                                                     <Icon icon="solar:check-circle-linear" className="text-xs" />
-                                                    {issue.confirmationCount} confirmations
+                                                    {(issue.confirmExistsCount || 0) + (issue.confirmFixedCount || 0)} confirmations
                                                 </span>
                                             </div>
                                         </div>

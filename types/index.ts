@@ -27,8 +27,10 @@ export interface Issue {
     assignedAt?: Timestamp | null;
     completedAt?: Timestamp | null;
     contractorId?: string | null;
-    confirmationCount: number;
-    reopenCount: number;
+    confirmationCount: number; // Total confirmations (legacy/all)
+    confirmExistsCount: number; // Citizens confirming it exists
+    confirmFixedCount: number; // Citizens confirming it is fixed
+    reopenCount: number; // Citizens reporting it's not fixed
     reportedBy?: string;
     imageUrl?: string;
 }
