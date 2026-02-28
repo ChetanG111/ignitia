@@ -8,6 +8,7 @@ import { collection, onSnapshot, query, orderBy } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { Issue, Contractor, Severity } from "@/types";
 import { calculateSLA, calculateOpenDays, formatStatus, severityOrder } from "@/lib/utils";
+import Select from "@/components/Select";
 
 export default function IssuesFeedPage() {
     const [issues, setIssues] = useState<Issue[]>([]);
@@ -88,7 +89,7 @@ export default function IssuesFeedPage() {
 
             <main className="flex-1 flex flex-col px-4 sm:px-8 pb-12 gap-6 max-w-4xl mx-auto w-full">
                 {/* Top Section: Control Bar */}
-                <section className="bg-white border border-neutral-200 rounded-2xl p-3 shadow-md flex flex-col sm:flex-row items-center gap-4 anim-bounce delay-100">
+                <section className="bg-white border border-neutral-200 rounded-2xl p-3 shadow-md flex flex-col sm:flex-row items-center gap-4 anim-bounce delay-100 relative z-30">
                     <div className="flex-1 relative w-full">
                         <Icon
                             icon="solar:magnifer-linear"
@@ -103,42 +104,50 @@ export default function IssuesFeedPage() {
                         />
                     </div>
 
-                    <div className="flex items-center gap-4 w-full sm:w-auto overflow-x-auto no-scrollbar pb-1 sm:pb-0">
-                        <select
-                            className="bg-white border border-neutral-200 rounded-xl px-3 py-2 text-sm font-medium text-black focus:outline-none focus:ring-1 focus:ring-black"
-                            onChange={(e) => setFilterSeverity(e.target.value || null)}
-                        >
-                            <option value="">All Severities</option>
-                            <option value="critical">Critical</option>
-                            <option value="high">High</option>
-                            <option value="medium">Medium</option>
-                            <option value="low">Low</option>
-                        </select>
+                    <div className="flex items-center gap-3 w-full sm:w-auto overflow-x-visible pb-1 sm:pb-0 h-10">
+                        <Select
+                            placeholder="All Severities"
+                            value={filterSeverity || ""}
+                            onChange={(v) => setFilterSeverity(v || null)}
+                            className="w-44 h-full"
+                            options={[
+                                { label: "All Severities", value: "" },
+                                { label: "Critical", value: "critical" },
+                                { label: "High", value: "high" },
+                                { label: "Medium", value: "medium" },
+                                { label: "Low", value: "low" },
+                            ]}
+                        />
 
-                        <select
-                            className="bg-white border border-neutral-200 rounded-xl px-3 py-2 text-sm font-medium text-black focus:outline-none focus:ring-1 focus:ring-black"
-                            onChange={(e) => setFilterStatus(e.target.value || null)}
-                        >
-                            <option value="">All Statuses</option>
-                            <option value="reported">Reported</option>
-                            <option value="assigned">Assigned</option>
-                            <option value="in_progress">In Progress</option>
-                            <option value="completed">Completed</option>
-                        </select>
+                        <Select
+                            placeholder="All Statuses"
+                            value={filterStatus || ""}
+                            onChange={(v) => setFilterStatus(v || null)}
+                            className="w-44 h-full"
+                            options={[
+                                { label: "All Statuses", value: "" },
+                                { label: "Reported", value: "reported" },
+                                { label: "Assigned", value: "assigned" },
+                                { label: "In Progress", value: "in_progress" },
+                                { label: "Completed", value: "completed" },
+                            ]}
+                        />
 
-                        <div className="w-px h-6 bg-neutral-200 hidden sm:block"></div>
+                        <div className="w-px h-5 bg-neutral-200 hidden sm:block mx-1"></div>
 
-                        <label className="flex items-center gap-2.5 cursor-pointer flex-shrink-0 pl-1 pr-2">
+                        <label className="flex items-center gap-3 cursor-pointer flex-shrink-0 px-2 h-full group">
                             <div className="relative">
                                 <input
                                     type="checkbox"
-                                    className="sr-only peer"
+                                    className="hidden"
                                     checked={overdueFirst}
                                     onChange={() => setOverdueFirst(!overdueFirst)}
                                 />
-                                <div className="w-9 h-5 bg-neutral-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-neutral-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-black"></div>
+                                <div className={`w-10 h-6 rounded-full transition-all duration-300 relative ${overdueFirst ? 'bg-black' : 'bg-neutral-200'}`}>
+                                    <div className={`absolute top-1 left-1 w-4 h-4 bg-white rounded-full transition-transform duration-300 shadow-sm ${overdueFirst ? 'translate-x-4' : 'translate-x-0'}`}></div>
+                                </div>
                             </div>
-                            <span className="text-sm font-medium text-black">Overdue First</span>
+                            <span className="text-sm font-semibold text-neutral-800 group-hover:text-black transition-colors">Overdue First</span>
                         </label>
                     </div>
                 </section>
@@ -180,6 +189,6 @@ export default function IssuesFeedPage() {
                     )}
                 </section>
             </main>
-        </div>
+        </div >
     );
 }

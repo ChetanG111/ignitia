@@ -7,6 +7,7 @@ import { collection, onSnapshot, updateDoc, doc, query, orderBy, serverTimestamp
 import { db } from "@/lib/firebase";
 import { Issue, Contractor } from "@/types";
 import { formatStatus } from "@/lib/utils";
+import Select from "@/components/Select";
 
 export default function AdminIssuesPage() {
     const [issues, setIssues] = useState<Issue[]>([]);
@@ -47,8 +48,8 @@ export default function AdminIssuesPage() {
                 <h1 className="text-xl font-medium tracking-tight text-neutral-900">Task Management</h1>
             </header>
 
-            <div className="p-6 lg:p-8 flex flex-col gap-6 anim-bounce overflow-hidden">
-                <div className="bg-white border border-neutral-200 rounded-2xl shadow-lg overflow-x-auto">
+            <div className="p-6 lg:p-8 flex flex-col gap-6 anim-bounce">
+                <div className="bg-white border border-neutral-200 rounded-2xl shadow-lg">
                     <table className="w-full text-left border-collapse min-w-[1000px]">
                         <thead>
                             <tr className="bg-neutral-50 border-b border-neutral-200">
@@ -69,15 +70,15 @@ export default function AdminIssuesPage() {
                                                 }`}>
                                                 {issue.severity}
                                             </span>
-                                            <select
+                                            <Select
                                                 value={issue.status}
-                                                onChange={(e) => updateIssue(issue.id, { status: e.target.value as any })}
-                                                className="text-xs font-semibold bg-neutral-100 border-none rounded p-1 focus:ring-1 focus:ring-black"
-                                            >
-                                                {["reported", "verified", "assigned", "in_progress", "completed", "reopened"].map(s => (
-                                                    <option key={s} value={s}>{formatStatus(s)}</option>
-                                                ))}
-                                            </select>
+                                                onChange={(v) => updateIssue(issue.id, { status: v as any })}
+                                                size="sm"
+                                                options={["reported", "verified", "assigned", "in_progress", "completed", "reopened"].map(s => ({
+                                                    label: formatStatus(s),
+                                                    value: s
+                                                }))}
+                                            />
                                         </div>
                                     </td>
                                     <td className="px-6 py-5">
@@ -87,20 +88,20 @@ export default function AdminIssuesPage() {
                                         </div>
                                     </td>
                                     <td className="px-6 py-5">
-                                        <select
+                                        <Select
                                             value={issue.contractorId || ""}
-                                            onChange={(e) => updateIssue(issue.id, {
-                                                contractorId: e.target.value,
+                                            onChange={(v) => updateIssue(issue.id, {
+                                                contractorId: v,
                                                 status: "assigned",
                                                 assignedAt: serverTimestamp() as any
                                             })}
-                                            className="w-full text-sm font-medium bg-neutral-50 border border-neutral-200 rounded-lg p-2 focus:border-black focus:outline-none"
-                                        >
-                                            <option value="">Select Contractor...</option>
-                                            {contractors.map(c => (
-                                                <option key={c.id} value={c.id}>{c.name}</option>
-                                            ))}
-                                        </select>
+                                            size="sm"
+                                            placeholder="Select Contractor..."
+                                            options={contractors.map(c => ({
+                                                label: c.name,
+                                                value: c.id
+                                            }))}
+                                        />
                                     </td>
                                     <td className="px-6 py-5 text-right">
                                         <div className="flex items-center justify-end gap-2">
